@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<title></title>
+<style>
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { width: 100%; height: 100%; }
+</style>
+
+<script type="text/javascript" src="http://api.docodoco.jp/v4/docodoco?key=nIZ44xi62EiFZxtr4wvPezV46vgPSkDgCBGy7yZCnfpGFR1d010CQxNFObzfQjz0" charset="utf-8"></script>
+<script>
+var selfLat = SURFPOINT.getOrgLatitude() || SURFPOINT.getCityLatitude() || SURFPOINT.getPrefLatitude();
+var selfLong = SURFPOINT.getOrgLongitude() || SURFPOINT.getCityLongitude() || SURFPOINT.getPrefLongitude();
+</script>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDI9rdPgAbVEmjLK69SSFxD6v03oH_BSso&sensor=false"></script>
+<script>
+function initPage() {
+    var selfLatLong = new google.maps.LatLng( selfLat, selfLong);
+
+    var mapOptions = {
+      center: selfLatLong,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    var marker = new google.maps.Marker({
+        position: selfLatLong,
+        map: map,
+        title: 'myMarker',
+        draggable:true,
+        animation: google.maps.Animation.DROP,
+        zIndex: 1
+    });
+    google.maps.event.addListener(marker,'dragend', function(event) {
+        infotable(Marker.getPosition().lat(),Marker.getPosition().lng(),map.getZoom());
+    })
+    google.maps.event.addListener(map, 'zoom_changed', function(event) {
+        infotable(Marker.getPosition().lat(),Marker.getPosition().lng(),map.getZoom());
+    })
+}
+
+google.maps.event.addDomListener(window, 'load', initPage);
+
+</script>
+</head>
+<body>
+<div id="map_canvas"></div>
+</body>
+</html>
+

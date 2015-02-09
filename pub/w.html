@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Syno</title>
+    <script src="socket.io.js"></script>
+    <script src="http://simplewebrtc.com/latest.js"></script>
+<!--
+    <script src="simplewebrtc.bundle.js"></script>
+-->
+
+<style>
+  html { color: #ffffff; background-color: #000000; background: url("g.jpg"); background-size: cover; }
+  body { height: 100%; padding: 0; }
+
+  #header { height: 0%; width: 100%; }
+  #control { float: right }
+  #remotes video { width: 50% ; clear: both; }
+  #remotes { text-align: center; border: 1px inset red; }
+  #base { text-align: center; margin: 0 auto; width: 40%; }
+  .local { float: left }
+  #footer { margin: 0 auto }
+</style>
+
+    <script>
+      var room = location.search && location.search.split('?')[1];
+    </script>
+  </head>
+  <body>
+
+      <div id="control">
+        <img src="r.png" height=50px onclick="location.reload()"><br>
+        <img src="e.png" width=50 height=50 
+onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%0D%0A&body=Hi%21%0D%0A%0D%0APlease%20open%20a%20URL%20as%20below%3A%0D%0A' + location.href ">
+      </div>
+    <!-- remote videos -->
+    <div id="remotes"></div>
+
+    <div id=base>
+      <!-- local video -->
+      <div class="local">
+        <video id="localVideo" style="width: 240px;">Your video</video>
+      </div>
+      <div class="local">
+        <img src="m.png" height=30px onclick="webrtc.mute();console.log(webrtc.muted);"><br>
+        <img src="d.png" height=30px onclick=""><br>
+        <img src="c.png" height=30px onclick="">
+      </div>
+    </div>
+
+    <script>
+
+      // connect to lobby
+      var webrtc = new SimpleWebRTC({
+        localVideoEl: 'localVideo',
+        remoteVideosEl: 'remotes',
+        autoRequestMedia: true,
+        detectSpeakingEvents: true,
+        autoAdjustMic: false
+      });
+
+      // join session
+      webrtc.on('readyToCall', function () {
+        webrtc.joinRoom(room);
+      });
+            
+    </script>
+  </body>
+</html>

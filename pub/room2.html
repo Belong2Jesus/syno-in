@@ -1,0 +1,364 @@
+
+<!doctype html>
+<html lang="ja" class="co-device-PC co-browser-Chrome co-browser-Chrome-30">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="shortcut icon" href="https://fsv.dhr-neo.jp/dneores/images/favicon.ico" />
+  <title>desknet's NEO</title>
+  <link rel="stylesheet" href="https://fsv.dhr-neo.jp/dneores/themes/jquery-ui-1.8.21.custom.css" type="text/css" />
+<link type="text/css" rel="stylesheet" href="https://fsv.dhr-neo.jp/dneores/themes/common.css?v=1.0.1.0" />
+<link type="text/css" rel="stylesheet" href="https://fsv.dhr-neo.jp/dneores/themes/color_blue.css" />
+<link type="text/css" rel="stylesheet" href="https://fsv.dhr-neo.jp/dneores/themes/forum.css" />
+<link type="text/css" rel="stylesheet" href="https://fsv.dhr-neo.jp/dneores/lang/ja_JP/themes/common.css?v=1.0.1.0" />
+</head>
+<body class="dn-side-close">
+<noscript>
+  <p>このページを表示するにはJavaScriptを有効にする必要があります。</p>
+</noscript>
+<div id="dn-header">
+ <input value="20131108113131"  type="hidden" name="servertime" id="jco-servertime"/>
+ <input value="50"  type="hidden" name="loginuid" id="jco-loginuid"/>
+ <input value="17"  type="hidden" name="logindefgroup" id="jco-logindefgroup"/>
+ <input value="/dneores/images/com/co-img_user_default.png"  type="hidden" name="loginimg" id="jco-loginimg"/>
+ <input value="1"  type="hidden" name="loginmaillink" id="jco-loginmaillink"/>
+<a id="dn-h-logo" href="dneo.cgi?">
+  <img alt="desknet's NEO" src="/dneores/images/com/dn-header_logo.png" />
+</a>
+  <div id="dn-h-search">
+    <form action="#">
+      <input class="searchbox" type="text" name="hsearch" value="" />
+      <select name="hmodule">
+        <option value="">（選んでください）</option>
+        <option value="0">巡回検索</option>
+        <option value="sch" data-module="dneo" data-topcmd="schindex">スケジュール</option>
+        <option value="todo" data-module="dneo" data-topcmd="todolist">ToDo</option>
+        <option value="mail" data-module="zmail" data-topcmd="maillist">ウェブメール</option>
+        <option value="plant" data-module="dneo" data-topcmd="plantweekgrp">設備予約</option>
+        <option value="flow" data-module="zflow" data-topcmd="flowindex">ワークフロー</option>
+        <option value="creport" data-module="zcreport" data-topcmd="creportindex">回覧・レポート</option>
+        <option value="agenda" data-module="zagenda" data-topcmd="agendaindex">議事録</option>
+        <option value="info" data-module="zinfo" data-topcmd="infoindex">インフォメーション</option>
+        <option value="addr" data-module="zmail" data-topcmd="addrindex">アドレス帳</option>
+        <option value="forum" data-module="zforum" data-topcmd="forumlist">電子会議室</option>
+        <option value="doc" data-module="zdoc" data-topcmd="docindex">文書管理</option>
+        <option value="koubai" data-module="zkoubai" data-topcmd="koubaiindex">購買予約</option>
+        <option value="prj" data-module="zproject" data-topcmd="prjindex">プロジェクト管理</option>
+        <option value="pay" data-module="zpay" data-topcmd="payindex">仮払精算</option>
+        <option value="stock" data-module="zstock" data-topcmd="stockindex">備品管理</option>
+        <option value="enq" data-module="zenquete" data-topcmd="enqindex">アンケート</option>
+        <option value="agent" data-module="zagent" data-topcmd="agentindex">アラーム</option>
+        <option value="memp" data-module="zmemp" data-topcmd="mempindex">メモパッド</option>
+        <option value="cab" data-module="zcabinet" data-topcmd="cabindex">キャビネット</option>
+        <option value="uset" data-module="dneo" data-topcmd="usetindex">利用者名簿</option>
+        <option value="safety" data-module="zsafety" data-topcmd="safetylist">安否確認</option>
+      </select>
+      <input class="jdn-h-search-button" name="s_hsearch" type="button" value="検索" />
+    </form>
+  </div><!-- #dn-h-search -->
+  <div id="dn-h-user">
+    <a title="矢谷 重人" id="dn-h-username" href="#" data-for="dn-h-usermenu" data-position="bottom" data-align="right" class="co-drop-down-button">矢谷 重人</a>
+    <ul class="co-pop-up-box" id="dn-h-usermenu">
+      <li class="dn-h-usermenu-item"><a href="dneo.cgi?cmd=psetindex">プロフィール</a></li>
+      <li class="dn-h-usermenu-item"><a href="dneo.cgi?cmd=pseticon">デザイン設定</a></li>
+      <li class="dn-h-usermenu-item"><a href="dneo.cgi?cmd=psetlang">言語及びﾀｲﾑｿﾞｰﾝ設定</a></li>
+      <li class="dn-h-usermenu-item"><a href="dneo.cgi?cmd=psetgroup">個人グループ設定</a></li>
+      <li class="dn-h-usermenu-item"><a href="#" id="jco-logout">ログアウト</a></li>
+      <li class="dn-h-usermenu-item"><a href="http://www.desknets.com/neo/help/index.html" target="helpindex">ヘルプ</a></li>
+    </ul>
+  </div><!-- #dn-h-user -->
+</div><!-- #dn-header -->
+<div id="dn-body">
+  <div id="dn-side-wrap">
+    <div id="dn-side">
+      <a id="dn-s-toggle" href="#">toggle</a>
+      <div id="dn-side-in">
+        <div id="dn-s-close">
+          <a id="dn-s-c-icon" href="#">×</a>
+        </div>
+        <div id="dn-s-scroll">
+          <div class="dn-s-menu" id="dn-s-menu">
+            <h3 class="dn-s-menu-title"><a class="dn-s-menu-link" href="#">メニュー</a></h3>
+            <ul class="dn-s-menu-list" id="dn-s-menu-toggle">
+              <li class="dn-s-menu-item"><a href="dneo.cgi?cmd=">ポータル</a></li>
+              <li class="dn-s-menu-item"><a href="dneo.cgi?cmd=schindex">スケジュール</a></li>
+              <li class="dn-s-menu-item"><a href="dneo.cgi?cmd=todolist">ToDo</a></li>
+              <li class="dn-s-menu-item"><a href="zmail.cgi?cmd=maillist">ウェブメール</a></li>
+              <li class="dn-s-menu-item"><a href="dneo.cgi?cmd=memoindex">伝言・所在</a></li>
+              <li class="dn-s-menu-item"><a href="ztcard.cgi?cmd=tcardindex">タイムカード</a></li>
+              <li class="dn-s-menu-item"><a href="dneo.cgi?cmd=plantweekgrp">設備予約</a></li>
+              <li class="dn-s-menu-item"><a href="zvisitor.cgi?cmd=visitorindex">来訪者管理</a></li>
+              <li class="dn-s-menu-item"><a href="zflow.cgi?cmd=flowindex">ワークフロー</a></li>
+              <li class="dn-s-menu-item"><a href="zcreport.cgi?cmd=creportindex">回覧・レポート</a></li>
+              <li class="dn-s-menu-item"><a href="zagenda.cgi?cmd=agendaindex">議事録</a></li>
+              <li class="dn-s-menu-item"><a href="zinfo.cgi?cmd=infoindex">インフォメーション</a></li>
+              <li class="dn-s-menu-item"><a href="zmail.cgi?cmd=addrindex">アドレス帳</a></li>
+              <li class="dn-s-menu-item on"><a href="zforum.cgi?cmd=forumlist">電子会議室</a></li>
+              <li class="dn-s-menu-item"><a href="zdoc.cgi?cmd=docindex">文書管理</a></li>
+              <li class="dn-s-menu-item"><a href="zkoubai.cgi?cmd=koubaiindex">購買予約</a></li>
+              <li class="dn-s-menu-item"><a href="zproject.cgi?cmd=prjindex">プロジェクト管理</a></li>
+              <li class="dn-s-menu-item"><a href="zpay.cgi?cmd=payindex">仮払精算</a></li>
+              <li class="dn-s-menu-item"><a href="zstock.cgi?cmd=stockindex">備品管理</a></li>
+              <li class="dn-s-menu-item"><a href="zenquete.cgi?cmd=enqindex">アンケート</a></li>
+              <li class="dn-s-menu-item"><a href="zagent.cgi?cmd=agentindex">アラーム</a></li>
+              <li class="dn-s-menu-item"><a href="zmemp.cgi?cmd=mempindex">メモパッド</a></li>
+              <li class="dn-s-menu-item"><a href="zcabinet.cgi?cmd=cabindex">キャビネット</a></li>
+              <li class="dn-s-menu-item"><a href="dneo.cgi?cmd=usetindex">利用者名簿</a></li>
+              <li class="dn-s-menu-item"><a href="zsafety.cgi?cmd=safetylist">安否確認</a></li>
+            </ul>
+          </div><!-- #dn-s-menu -->
+<!--lmenu_submain_s-->
+          <div class="dn-s-menu" id="dn-s-guide">
+            <h3 class="dn-s-menu-title on">
+              <a class="dn-s-menu-link" href="#">電子会議室</a>
+            </h3>
+            <div class="dn-s-guide">
+              <div class="co-guide-item on">
+                <div class="co-guide-title search"><a class="co-guide-toggle" href="#">記事検索</a></div>
+                <div class="co-guide-toggle-item jco-subwindow-search">
+                  <span class="co-guide-label">キーワード</span><br />
+                  <input type="text" class="co-width-100p" name="srch_key" /><br />
+                  <span class="co-guide-label">検索対象</span><br />
+                  <select name="sw_target">
+                    <option value="3">内容</option>
+                    <option value="2">投稿者名</option>
+                  </select><br />
+                  <span class="co-guide-label">投稿日</span><br />
+                  <input class="co-datepicker" type="date" name="sdate" />～<input class="co-datepicker" type="date" name="edate" /><br />
+                  <input class="co-guide-searchbtn co-btnlink" type="button" value="検索" />
+                  <a class="co-abtn co-btnclear" href="#"><span>クリア</span></a>
+                </div><!-- .co-guide-toggle-item -->
+              </div><!-- .co-guide-item -->
+            </div>
+          </div><!-- #dn-s-guide -->
+<!--lmenu_submain_e-->
+        </div><!-- #dn-s-scroll -->
+      </div><!-- #dn-side-in -->
+    </div><!-- #dn-side -->
+  </div><!-- #dn-side-wrap -->
+  <div id="dn-main-wrap">
+    <div id="dn-ntwi-container" class="" data-interval="10" data-per-page-all="50" data-per-page-single="100" data-confirm-to-post="true" data-check-mail="">
+      <div class="ntwi-header">
+        <ul class="ntwi-whats-new">
+          <li class="none"><span class="co-icon"></span><span class="co-text"></span></li>
+          <li><span class="co-icon"></span><span class="co-text"></span></li>
+        </ul>
+        <div id="ntwi-head-time" class="co-clock"></div>
+        <div class="ntwi-header-menu">
+          <a href="#" class="ntwi-btn ntwi-news-btn jntwi-list-type-btn" data-type="news" title="お知らせ"><span class="ntwi-header-icon news">お知らせ</span><span class="ntwi-badge"></span></a>
+          <a href="#" class="ntwi-btn ntwi-talk-btn jntwi-list-type-btn" data-type="talk" title="つぶやき"><span class="ntwi-header-icon talk">つぶやき</span><span class="ntwi-badge"></span></a>
+          <a href="#" class="ntwi-btn ntwi-message-btn jntwi-list-type-btn" data-type="message" title="ダイレクトメッセージ"><span class="ntwi-header-icon message">ダイレクトメッセージ</span><span class="ntwi-badge"></span></a>
+        </div>
+      </div>
+    </div>
+    <div id="dn-main">
+      <div class="co-m-header">
+        <div id="co-m-h-setting">
+          <a class="co-drop-down-button" id="co-m-h-setting-link" href="#" data-for="co-m-h-setting-menus" data-align="right">設定</a>
+          <div class="co-pop-up-box" id="co-m-h-setting-menus">
+            <div class="co-m-h-setting-menu stlink">
+              <a class="co-m-h-setting-list-label on" href="#">個人設定</a>
+              <ul class="co-m-h-setting-list on">
+                <li class="co-m-h-setting-item" id="forumpsetgen"><a href="zforum.cgi?cmd=forumpsetgen">表示設定</a></li>
+                <li class="co-m-h-setting-item" id="forumpsetread"><a href="zforum.cgi?cmd=forumpsetread">記事の一括既読</a></li>
+                <li class="co-m-h-setting-item" id="forumpsetlabel"><a href="zforum.cgi?cmd=forumpsetlabel">ラベル設定</a></li>
+              </ul>
+            </div><!-- .co-m-h-setting-menu -->
+            <div class="co-m-h-setting-menu hplink">
+              <a class="co-m-h-setting-list-label jco-helplink" href="http://www.desknets.com/neo/help/ja_JP/public/forum.html" target="helpindex">ヘルプ</a>
+            </div><!-- .co-m-h-setting-menu -->
+          </div><!-- #co-m-h-setting-menus -->
+        </div><!-- #co-m-h-setting -->
+        <h2 class="co-m-title"><span class="forum-m-title">電子会議室</span><span id="jco-m-sub-title"></span></h2>
+      </div><!-- #co-m-header -->
+    <div class="co-m-content">
+      <div class="co-topmsg">
+        <span class="co-topmsg-text jforum-topmsg-user" id="jforum-topmsg">
+          <a class="co-btn co-btn-close" href="#" title="閉じる">閉じる</a>
+          <span id="co-topmsg-text-set"></span>
+        </span>
+      </div>
+      <div id="jco-m-list-container" class="jco-page">
+        <input type="hidden" class="jco-title" value="" />
+        <input value="forumlist"  type="hidden" id="jco-pv-funcid" name="pv-funcid" />
+        <form action="zrforum.cgi"  method="post" name="listfrm" id="listfrm">
+          <input type="hidden" name="cmd" />
+          <!-- 一覧再表示用 -->
+          <div class="jco-back-page-data">
+            <input type="hidden" name="labelid" value="" />
+          </div>
+          <!-- 一覧再表示用 -->
+
+          <!-- ページリンク表示用 -->
+          <input type="hidden" class="jco-pv-cnt" value="" />
+          <input type="hidden" class="jco-pv-all-cnt" value="" />
+          <!-- ページリンク表示用 -->
+
+          <!-- 初期画面表示用 -->
+          <input type="hidden" class="jco-pv-def-page-row" value="0" />
+          <!-- 初期画面表示用 -->
+
+          <!-- ページリンク -->
+          <div class="co-page top jco-pager"><br /></div>
+          <!-- ページリンク -->
+          <div class="co-listview forum-listview">
+            <div class="co-listview-left forum-listview-left-new">
+              <div class="co-listview-left-title">ラベル</div>
+              <div class="co-listview-left-subtitle">
+                <input type="button" value="追加" class="jco-label-add" title="ラベルの追加"/>
+                <input type="button" value="編集" class="jco-label-mod" title="ラベルの編集"/>
+                <input type="button" value="削除" class="jco-label-del" title="ラベルの削除"/>
+              </div>
+              <div class="co-listview-left-data">
+                <!-- 新着情報 -->
+                <div class="co-listview-item forum-listview-folder-new open">
+                  <a class="forum-new" href="#">新着情報</a>
+                </div>
+                <!-- 新着情報 -->
+                <!-- ラベル＋会議室情報 -->
+                <ul class="co-listview-items forum-drag">
+                  <li class="jforum_label_area">
+                  </li>
+                </ul><!-- .co-listview-items -->
+                <!-- ラベル＋会議室情報 -->
+              </div>
+            </div><!-- #co-listview-left -->
+<!--listmiddle_s-->
+<!--listmiddle_e-->
+            <div class="co-listview-list forum-top-listview-list">
+              <div class="co-btnarea">
+              </div>
+              <div class="co-listview-scroll">
+                <div class="forum-top-listview-list-new">
+                  <div class="forum-top-header">
+                    <div class="forum-top-title">新着投稿</div>
+                    <div class="forum-top-note">新着のあったトピックが一覧で表示されます。</div>
+                  </div>
+                  <div class="co-nodata">新着のトピックはありません。</div>
+                  <table class="jforum-table-newlista forum-top-list">
+                    <tbody class="co-tbody-list">
+<tr class="forum-unread {{class-read}}">
+<th class="{{borderline}}">
+<div class="forum-top-list-fname">
+<a href="#" class="jforum-forumlink" title="{{forumname}}" data-fid="{{SID_FORUM}}">{{forumname}}</a>
+</div>
+<div class="forum-top-list-tname">
+<a href="#" class="jforum-topiclink" title="{{topicname}}" data-fid="{{SID_FORUM}}" data-tid="{{SID_TOPIC}}">{{topicname}}</a>
+</div>
+</th>
+<td class="{{borderline}}">
+<div class="forum-top-list-memo">{{memo}}</div>
+</td>
+<td class="forum-top-list-last {{borderline}}">
+<div class="forum-top-list-name">
+<span title="{{contr}}">{{contr}}</span>
+</div>
+<div class="forum-top-list-date">
+{{latestentrytime}}
+</div>
+</td>
+<td class="forum-top-list-read {{borderline}}"></td>
+</tr>
+                    </tbody>
+                  </table>
+                  <div class="forum-over-newtopic"></div>
+                  <div class="jforum-read-all-area co-tright">
+                    <input type="button" value="一括既読" class="jforum-newread" title="新着投稿を一括既読"/><br />
+                    <span class="co-msg">※すべての投稿を既読にします</span>
+                  </div>
+                  <div class="form-top-newlist-forum">
+                    <div class="forum-top-header">
+                      <div class="forum-top-title">新着会議室</div>
+                      <div class="forum-top-note">「ラベルなしの会議室」から自由にラベルを付けて振り分けることができます。</div>
+                    </div>
+                    <table class="jforum-table-newlistf forum-top-list">
+                      <tbody class="jforum-tbody-forumlist">
+<tr class="">
+<th class="forum-top-list-fname {{borderline}}">
+<a href="#" class="jforum-forumlink" title="{{Name}}" data-fid="{{id}}">{{Name}}</a>
+</th>
+<td class="forum-top-list-outline {{borderline}}">{{outline}}</td>
+</tr>
+                      </tbody>
+                    </table>
+                    <div class="forum-over-newforum"></div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- #co-listview-list -->
+          </div><!-- #co-listview -->
+          <!-- ページリンク -->
+          <div class="co-page bottom jco-pager"></div>
+          <!-- ページリンク -->
+
+          <!-- 移動対象ID -->
+          <div class="jco-move-ids"></div>
+          <!-- 移動対象ID -->
+        </form>
+        <ul class="co-stnote co-msg">
+          <li class="forum-msg forum">稼働：会議室は閲覧と書込みができます。</li>
+          <li class="forum-msg forum-off">休止：会議室は閲覧も書込もできません。</li>
+        </ul>
+        <div class="co-editarea co-pop-label"></div>
+      </div>
+      <div id="jco-m-input-page" class="jco-page"></div>
+      <div id="jco-m-topiclist-container" class="jco-page"></div>
+      <div id="jco-m-articlelist-container" class="jco-page"></div>
+      <div id="jco-m-search-container" class="jco-page"></div>
+    </div>
+      <div class="co-copyright">
+        Copyright (C)2012-2013 NEOJAPAN,Inc. All Rights Reserved.
+      </div>
+    </div><!-- #dn-main -->
+  </div><!-- #dn-main-wrap -->
+</div><!-- #dn-body -->
+<!-- 付箋 -->
+<div id="dn-tags">
+  <ul id="tag-links">
+    <li class="tag-module" data-type="module" data-id="5" title="伝言の付箋"><a href="#" class="memo">伝言の付箋</a></li>
+    <li class="tag-colored" data-type="tagcolor" data-id="1"><a href="#" class="blue">青</a></li>
+    <li class="tag-colored" data-type="tagcolor" data-id="2"><a href="#" class="green">緑</a></li>
+    <li class="tag-colored" data-type="tagcolor" data-id="3"><a href="#" class="yellow">黄</a></li>
+    <li class="tag-colored" data-type="tagcolor" data-id="4"><a href="#" class="pink">桃</a></li>
+    <li class="tag-colored" data-type="tagcolor" data-id="5"><a href="#" class="red">赤</a></li>
+    <li class="tag-colored" data-type="tagcolor" data-id="6"><a href="#" class="gray">灰</a></li>
+    <li class="tag-colored" data-type="add" data-id="0" title="追加"><a href="#" class="add">追加</a></li>
+  </ul>
+</div>
+<div id="dn-loading" class="co-position-fixed co-bottom-tip" style="display: none;" data-position="center bottom">
+  <div class="dn-loading-message">読込中..</div>
+</div>
+<script type="text/javascript">
+var jsonRest=
+{"status":"ok","allcnt":"0","row":"0","list":""};
+</script>
+<script type="text/javascript">
+var jsonRestLabel=
+{"status":"ok","list":{"item":{"id":"-1","Name":"\u30e9\u30d9\u30eb\u306a\u3057\u306e\u4f1a\u8b70\u5ba4","list":{"item":{"id":"8","Name":"\u793e\u5185\u30b0\u30eb\u30fc\u30d7\u30a6\u30a7\u30a2\u95a2\u9023","outline":"\u793e\u5185\u30b0\u30eb\u30fc\u30d7\u30a6\u30a7\u30a2\uff08Desknet's NEO\uff09\u306b\u95a2\u3059\u308b\u8981\u671b\u3001\u4e0d\u5177\u5408\u5831\u544a\u3092\u884c\u3046\u5834\u6240\u3067\u3059\u3002\n\u3053\u3061\u3089\u306b\u8a18\u8f09\u3055\u308c\u305f\u60c5\u5831\u306f\u30d0\u30c3\u30af\u30aa\u30d5\u30a3\u30b9G\u306b\u3066\u53d6\u308a\u307e\u3068\u3081\u3092\u884c\u3044\u3001\u30cd\u30aa\u30b8\u30e3\u30d1\u30f3\u793e\u3078\u30ec\u30dd\u30fc\u30c8\u81f4\u3057\u307e\u3059\u3002","anonymouse":"0","attachuse":"1","attachsize":"1","maxcontribute":"0","maxcont":"100","fctrl":"2","save":"0","fstatus":"1","cretime":"20130501135034","labelid":"","labelname":""}}}}};
+</script>
+<script type="text/javascript">
+var jsonRestForumNew=
+{"status":"ok","allcnt":"0","row":"0","list":""};
+</script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/extlibs/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/extlibs/jquery-ui-1.8.21.custom.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/extlibs/jquery.cookie/jquery.cookie.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/extlibs/jquery.tablednd_0_5.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/extlibs/jquery.tmpl.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/extlibs/jquery.jstree.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/extlibs/jquery.layout-1.3.0.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/extlibs/jquery.form.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/neolibs/jquery.formex.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/neolibs/jquery.formSetUp.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/neolibs/jquery.detectHref.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/comlib/uploader.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/lang/ja_JP/js/resource.js?v=1.0.1.0"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/lang/ja_JP/js/forum.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/comlib/neo.js?v=1.0.1.0"></script>
+<script type="text/javascript" charset="utf-8" src="https://fsv.dhr-neo.jp/dneores/js/dn/core.js?v=1.0.2.6"></script>
+<script type="text/javascript" charset="utf-8" src="/dneores/js/dn/forum.js?v=1.0.2.6"></script>
+</body>
+</html>
+
+
