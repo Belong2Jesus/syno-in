@@ -1,6 +1,6 @@
 #!/bin/sh
 
-nohup node server.js topPage 80 210.152.137.233 &
+NODE_ENV=develop nohup node server.js topPage &
 echo $! > pid
 
 

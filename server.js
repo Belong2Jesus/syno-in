@@ -1,7 +1,6 @@
 #!/bin/env node
-
+var config = require('config');
 var connect = require('connect');
-// var http   = require('http');
 
 var app = connect()
 //  .use(function(req, res){
@@ -9,7 +8,7 @@ var app = connect()
 //  })
   .use(connect.static(__dirname + '/pub'));
 
-app.listen(80, "210.152.137.233");
+app.listen(config.server.port, config.server.ip);
 
 /*
 

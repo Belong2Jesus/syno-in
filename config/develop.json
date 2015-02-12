@@ -1,0 +1,8 @@
+{
+    "isDev": true,
+    "server": {
+        "port": "8080",
+        "ip": "localhost"
+    }
+}
+

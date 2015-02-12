@@ -3,7 +3,7 @@
   <head>
     <title>Syno</title>
     <script src="socket.io.js"></script>
-    <script src="latest.js"></script>
+    <script src="simplewebrtc.bundle.js"></script>
     <style>
       html { height: 100%; color: white; background: url("g.jpg"); background-size: cover }
       body { height: 100%; margin: 0; }
@@ -13,7 +13,7 @@
         #chat { text-align: left; position: absolute; top 0; left: 0; width: 250px }
           #chatInput { width: 250px }
           #chatlog { word-wrap: break-word; overflow: hidden; width: 250px }
-            #chatText { border-top: 1px solid blue }
+            #chatText { clear: both; border-top: 1px solid blue }
         #LocalVideoConteiner { position: absolute; left: 40%; height: 100% ; }
           #localVideo { float: left; height: 100% }
           #localControl { float: left }
@@ -96,17 +96,17 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
         }
       }
       function videoAdd (video, peer){
-        var remotes = document.getElementById('remotes');
-        var container = document.createElement('div');
-        container.className = 'videoContainer';
-        container.id = 'container_' + webrtc.getDomId(peer);
-        container.appendChild(video);
-        // show the remote volume
-        var vol = document.createElement('div');
-        vol.className = 'volumeBar';
-        vol.id = 'volume_' + peer.id;
-        container.appendChild(vol);
-        remotes.appendChild(container);
+                    var remotes = document.getElementById('remotes');
+                    var container = document.createElement('div');
+                    container.className = 'videoContainer';
+                    container.id = 'container_' + webrtc.getDomId(peer);
+                    container.appendChild(video);
+                    // show the remote volume
+                    var vol = document.createElement('div');
+                    vol.className = 'volumeBar';
+                    vol.id = 'volume_' + peer.id;
+                    container.appendChild(vol);
+                    remotes.appendChild(container);
       }
       webrtc.on('videoAdded', function (video, peer) {alignVideo();});
       webrtc.on('videoRemoved', function (video, peer) { alignVideo();});
@@ -123,7 +123,7 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
         var snap = document.getElementById("snap").toDataURL();
         var html = '<div class=chatText><img style="float:left" width="60" src="' + snap + '">' + 
             _text.value.replace(/((http:|https:)\/\/[\x21-\x26\x28-\x7e]+)/gi, "<a href='$1' target=_blank>$1</a>") +
-            '<p style="clear:both"></p></div>';
+            '<br></div>';
         webrtc.sendDirectlyToAll("text chat", "chat", html);
         apendChat(html);
         _text.value = '';
@@ -186,4 +186,3 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
 </script>
   </body>
 </html>
-
