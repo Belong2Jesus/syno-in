@@ -1,0 +1,13 @@
+
+
+export NODE_ENV=production
+NODE_CONFIG_DIR=/home/rtc/node-scripts/syno-in/config \
+/root/.nodebrew/current/bin/node /
+/root/.nodebrew/current/bin/forever start /
+/home/rtc/node-scripts/syno-in/server.js /
+--pidfile /var/log/syno-in.pid /
+-o /var/log/node-app-syno-in-std.log \
+-e /var/log/node-app-syno-in-err.log \
+-l /var/log/node-app-syno-in.log -a -w
+
+
