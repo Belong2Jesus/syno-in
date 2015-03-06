@@ -1,17 +1,30 @@
 #!/bin/env node
 var config = require('config');
 var connect = require('connect');
+var https = require('https');
+var fs = require('fs');
+console.log(config);
 
-var app = connect()
-//  .use(function(req, res){
-//    if (0) { res.end(__dirname + '\n'); }
-//  })
-  .use(connect.static(__dirname + '/pub'));
+var options = {
+    key:    fs.readFileSync(__dirname + '/ssl/startssl.key.nopass'),
+    cert:   fs.readFileSync(__dirname + '/ssl/startssl.crt.append'),
+    ca:     fs.readFileSync(__dirname + '/ssl/ca.pem')
+};
+// oreore
+//var options = {
+//    key:    fs.readFileSync(__dirname + '/ssl/server_key.pem'),
+//    cert:   fs.readFileSync(__dirname + '/ssl/server_crt.pem')
+//};
 
-app.listen(config.server.port, config.server.ip);
+https.createServer(options, function(req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end( fs.readFileSync(__dirname + ( (req.url === "/") ? '/index.html' : '/vchat.html')));
+}).listen(config.app.port, config.app.ip);
+
+var resource = connect().use(connect.static(__dirname + '/pub'));
+https.createServer(options,resource).listen(config.resource.port, config.resource.ip);
 
 /*
-
 var server = http.createServer(app);
 var io     = require('socket.io').listen(server);
 

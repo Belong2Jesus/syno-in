@@ -1,0 +1,12 @@
+{
+    "isDev": true,
+    "app": {
+        "port": "443",
+        "ip": "localhost"
+    },
+    "resource": {
+        "port": "8081",
+        "ip": "localhost"
+    }
+}
+
