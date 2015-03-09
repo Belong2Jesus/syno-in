@@ -16,13 +16,17 @@ var options = {
 //    cert:   fs.readFileSync(__dirname + '/ssl/server_crt.pem')
 //};
 
-https.createServer(options, function(req, res){
+var server = https.createServer(options, function(req, res){
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end( fs.readFileSync(__dirname + ( (req.url === "/") ? '/index.html' : '/vchat.html')));
 }).listen(config.app.port, config.app.ip);
 
+// var io = socket.listen(server);
+
+
 var resource = connect().use(connect.static(__dirname + '/pub'));
 https.createServer(options,resource).listen(config.resource.port, config.resource.ip);
+
 
 /*
 var server = http.createServer(app);

@@ -5,7 +5,6 @@
 document.write("<base href='" + location.protocol + "//" + location.host + ":8081' />");
 </script>
     <title>Syno</title>
-    <script src="socket.io.js"></script>
     <script src="latest.js"></script>
     <style>
       html { height: 100%; color: white; background: url("g.jpg"); background-size: cover }
@@ -58,7 +57,7 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
     <script>
     // connect to lobby
       var webrtc = new SimpleWebRTC({
-        url: 'http://210.152.158.59:80',
+        url: 'https://s.syno.in:4443',
         localVideoEl: 'localVideo',
         remoteVideosEl: 'remotes',
         autoRequestMedia: true,
