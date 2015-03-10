@@ -12,6 +12,11 @@ if (config.isDev === false) {
     res.end();
   }).listen(80, config.app.ip);
 }
+//var index_filename = __dirname + '/index.html';
+//var vchat_filename = __dirname + '/vchat.html';
+//var index = fs.readFileSync(index_filename);
+//var vchat = fs.readFileSync(vchat_filename);
+//fs.watch(index_filename);
 
 var options = {
     key:    fs.readFileSync(__dirname + '/ssl/startssl.key.nopass'),

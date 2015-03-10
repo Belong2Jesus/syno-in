@@ -23,7 +23,7 @@ document.write("<base href='" + location.protocol + "//" + location.host + ":808
       .volumeBar { position: absolute; width: 5px; height: 0px; right: 0px bottom: 0px; background-color: #12acef }
     </style>
     <script>
-      var room = location.search && location.search.split('?')[1];
+      var room = location.pathname && location.pathname.substr(1);
       var muted = paused = false; var pCount = 0;
     </script>
   </head>
