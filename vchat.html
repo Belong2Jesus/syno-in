@@ -2,10 +2,12 @@
 <html>
   <head>
 <script type="text/javascript">
-document.write("<base href='" + location.protocol + "//" + location.host + ":8081' />");
+document.write("<base href='https://" + location.host + ":8081' />");
+//document.write("<base href='" + location.protocol + "//" + location.host + ":8081' />");
 </script>
     <title>Syno</title>
-    <script src="latest.js"></script>
+    <script src="simplewebrtc.bundle.js"></script>
+    <script src="socket.io.js"></script>
     <style>
       html { height: 100%; color: white; background: url("g.jpg"); background-size: cover }
       body { height: 100%; margin: 0; }
@@ -52,19 +54,20 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       </div>
     </div>
     <div id=footer>
-      <!-- img src=ss.png width=200px -->
+      <img src=ss.png width=200px>
     </div>
     <script>
     // connect to lobby
       var webrtc = new SimpleWebRTC({
-        url: 'https://s.syno.in:4443',
+        url: 'https://syno.in:4443',
         localVideoEl: 'localVideo',
         remoteVideosEl: 'remotes',
         autoRequestMedia: true,
 //        detectSpeakingEvents: true,
-        peerConnectionConfig: {iceServers:[
-          {url: "stun:210.152.137.104:53"},
-          {url: "turn:synou@210.152.137.104:53?transport=tcp", username: "synou", credential: "syno"}]},
+//        peerConnectionConfig: {iceServers:[
+//          {url: "stun:syno.in:53"},
+//          {url: "turn:stun.syno.in:53?transport=tcp", username: "synou", credential: "syno"}]},
+//          {url: "turn:syno.in:53", username: "synou", credential: "syno"}]},
         media: { video: { mandatory: { maxWidth: 320, maxHeight: 240, maxFrameRate: 8 } }, audio: true }
       });
     // join session

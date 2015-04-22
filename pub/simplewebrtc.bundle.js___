@@ -26,7 +26,6 @@ function SimpleWebRTC(opts) {
                 video: true,
                 audio: true
             },
-// iceServers: { "url": "turn:stun.syno.in:53?transport=tcp", "username": "synou", "secret": "syno" },
             receiveMedia: { // FIXME: remove old chrome <= 37 constraints format
                 mandatory: {
                     OfferToReceiveAudio: true,

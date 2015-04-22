@@ -26,7 +26,7 @@ function SimpleWebRTC(opts) {
                 video: true,
                 audio: true
             },
-// iceServers: { "url": "turn:stun.syno.in:53?transport=tcp", "username": "synou", "secret": "syno" },
+//iceServers: { "url": "turn:stun.syno.in:53?transport=tcp", "username": "synou", "secret": "syno" },
             receiveMedia: { // FIXME: remove old chrome <= 37 constraints format
                 mandatory: {
                     OfferToReceiveAudio: true,
@@ -85,7 +85,6 @@ function SimpleWebRTC(opts) {
         if (message.type === 'offer') {
             if (peers.length) {
                 peers.forEach(function (p) {
-                    if (p.sid == message.sid) peer = p;
                 });
                 //if (!peer) peer = peers[0]; // fallback for old protocol versions
             }
@@ -9636,3 +9635,4 @@ module.exports = TraceablePeerConnection;
 },{"util":8,"webrtcsupport":6,"wildemitter":2}]},{},[1])(1)
 });
 ;
+(function(e){if("function"==typeof bootstrap)bootstrap("simplewebrtc",e);else if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else if("undefined"!=typeof ses){if(!ses.ok())return;ses.makeSimpleWebRTC=e}else"undefined"!=typeof window?window.SimpleWebRTC=e():global.SimpleWebRTC=e()})(function(){var define,ses,bootstrap,module,exports;

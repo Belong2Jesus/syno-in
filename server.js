@@ -10,6 +10,8 @@ if (config.isDev === false) {
   http.createServer(function (req, res) {
     res.writeHead(301, {'Location': 'https://syno.in' + req.url});
     res.end();
+//    res.writeHead(200, {'Content-Type': 'text/html'});
+//    res.end( fs.readFileSync(__dirname + ( (req.url === "/") ? '/index.html' : '/vchat.html')));
   }).listen(80, config.app.ip);
 }
 //var index_filename = __dirname + '/index.html';
