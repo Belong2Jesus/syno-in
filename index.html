@@ -2,7 +2,9 @@
 <html lang="ja">
 <head>
 <script type="text/javascript">
-document.write("<base href='" + location.protocol + "//" + location.host + ":8081' />");
+  var x = document.createElement("BASE");
+  x.setAttribute("href", location.protocol + "//" + location.host.split(/:/, 1)[0] + ":8081");
+  document.head.appendChild(x);
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -92,4 +94,7 @@ This site is still in beta.
 
 </body>
 </html>
+
+
+
 

@@ -2,8 +2,9 @@
 <html>
   <head>
 <script type="text/javascript">
-document.write("<base href='https://" + location.host + ":8081' />");
-//document.write("<base href='" + location.protocol + "//" + location.host + ":8081' />");
+  var x = document.createElement("BASE");
+  x.setAttribute("href", location.protocol + "//" + location.host.split(/:/, 1)[0] + ":8081");
+  document.head.appendChild(x);
 </script>
     <title>Syno</title>
     <script src="simplewebrtc.bundle.js"></script>
@@ -191,4 +192,9 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
 </script>
   </body>
 </html>
+
+
+
+
+
 

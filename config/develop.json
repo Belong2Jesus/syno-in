@@ -2,11 +2,11 @@
     "isDev": true,
     "app": {
         "port": "8080",
-        "ip": "localhost"
+        "ip": "127.0.0.1"
     },
     "resource": {
         "port": "8081",
-        "ip": "localhost"
+        "ip": "127.0.0.1"
     }
 }
 
