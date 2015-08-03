@@ -1,0 +1,22 @@
+<html>
+<head>
+<!-- Firebase -->
+<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+<!-- CodeMirror -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.css" />
+<!-- Firepad -->
+<link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.1.1/firepad.css" />
+<script src="https://cdn.firebase.com/libs/firepad/1.1.1/firepad.min.js"></script>
+</head>
+<body>
+<div id="firepad" width=100% height=20% background-color=#f62></div>
+<script>
+  var firepadRef = new Firebase('https://van.firebaseio.com/firepads/1');
+  var codeMirror = CodeMirror(document.getElementById('firepad'), { lineWrapping: true });
+  var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror,
+      { richTextShortcuts: true, richTextToolbar: true, defaultText: 'Hello, World!' });
+</script>
+
+</body>
+</html>
