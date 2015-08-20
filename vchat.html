@@ -224,24 +224,28 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       }, false);
       function updateNote(mod){
         var sel = document.getSelection();
-        var range = sel.getRangeAt(0);
-        var pos = range.startOffset;
-        ed.innerHTML = mod.text;
-        if (mod.pos < pos){
-          range.setStart(ed, pos);
-          range.setEnd(sel.baseNode, pos);
-          sel.removeAllRanges();
-          sel.addRange(range);
+        if (sel.rangeCount == 1){
+          var range = sel.getRangeAt(0);
+          var pos = range.startOffset;
+          ed.innerHTML = mod.text;
+console.log(mod.pos, pos);
+          if (mod.pos < pos){
+            range.setStart(ed, pos);
+            range.setEnd(sel.baseNode, pos);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          } else {
+            range.setStart(ed, pos);
+            range.setEnd(sel.baseNode, pos);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
         } else {
-          range.setStart(ed, pos);
-          range.setEnd(sel.baseNode, pos);
-          sel.removeAllRanges();
-          sel.addRange(range);
+          ed.innerHTML = mod.text;
         }
       }
-
       webrtc.on('channelMessage', function (peer, label, data, ch, ev) {
-        if (label == 'text chat' && data.type == 'chat') {
+        if (data.type == 'chat') {
           apendChat(data.payload);
         } else if (data.type == 'volume') {
           showVolume(document.getElementById('volume_' + peer.id), data.volume);

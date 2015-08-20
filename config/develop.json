@@ -2,11 +2,16 @@
     "isDev": true,
     "app": {
         "port": "8080",
-        "ip": "127.0.0.1"
+        "ip":   "127.0.0.1",
+        "host": "localhost"
     },
     "resource": {
         "port": "8081",
         "ip": "127.0.0.1"
+    },
+    "ssl": {
+        "key":  "ssl_dev/key.pem",
+        "cert": "ssl_dev/cert.pem"
     }
 }
 
