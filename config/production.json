@@ -2,16 +2,16 @@
     "isDev": false,
     "app": {
         "port": "443",
-        "ip":   "210.152.137.233",
+        "ip":   "10.3.0.144",
         "host": "syno.in"
     },
     "resource": {
         "port": "8081",
-        "ip": "210.152.137.233"
-    }
+        "ip": "10.3.0.144"
+    },
     "ssl": {
-        "key":  "ssl_dev/key.pem",
-        "cert": "ssl_dev/cert.pem",
+        "key":  "ssl/key.pem",
+        "cert": "ssl/cert.pem",
         "ca":   "ssl/ca.pem"
     }
 }
