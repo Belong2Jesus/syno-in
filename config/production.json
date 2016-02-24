@@ -10,8 +10,8 @@
         "ip": "10.3.0.144"
     },
     "ssl": {
-        "key":  "ssl/key.pem",
-        "cert": "ssl/cert.pem",
-        "ca":   "ssl/ca.pem"
+        "key":  "/etc/letsencrypt/live/syno.in/privkey.pem",
+        "cert": "/etc/letsencrypt/live/syno.in/cert.pem",
+        "ca":   "/etc/letsencrypt/live/syno.in/chain.pem"
     }
 }

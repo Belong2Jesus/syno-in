@@ -8,15 +8,21 @@ console.log(config);
 
 if (config.isDev === false) {
   http.createServer(function (req, res) {
-    res.writeHead(301, {'Location': 'https://'+ config.app.host + req.url});
+    if (req.url.indexOf("/.well-known/acme-challenge") == 0 && 
+        fs.statSync(__dirname + "/letsencrypt" + req.url).isFile() ) {
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.write(fs.readFileSync(__dirname + "/letsencrypt" + req.url));
+    } else {
+      res.writeHead(301, {'Location': 'https://'+ config.app.host + req.url});
+    }
     res.end();
   }).listen(80, config.app.ip);
 }
   var options = {
-      key:    fs.readFileSync(__dirname + '/' + config.ssl.key),
-      cert:   fs.readFileSync(__dirname + '/' + config.ssl.cert)
+      key:    fs.readFileSync(config.ssl.key),
+      cert:   fs.readFileSync(config.ssl.cert)
   };
-  if(config.ssl.ca){options.ca = fs.readFileSync(__dirname + '/' + config.ssl.ca);}
+  if(config.ssl.ca){options.ca = fs.readFileSync(config.ssl.ca);}
 
 var server = https.createServer(options, function(req, res) {
   res.writeHead(200, {'Content-Type': 'text/html'});
