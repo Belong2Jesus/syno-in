@@ -7,8 +7,7 @@
   document.head.appendChild(x);
 </script>
     <title>Syno</title>
-    <scripto src="simplewebrtc.bundle.js"></script>
-    <script src="latest.js"></script>
+    <script src="latest-v2.js"></script>
     <script src="socket.io.js"></script>
     <style>
       html { height: 100%; background: url("g.jpg"); background-size: cover }
@@ -109,7 +108,8 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       }
     // connect to lobby
       var webrtc = new SimpleWebRTC({
-        url: 'https://syno.in:4443',
+        url: location.origin,
+//        url: 'https://syno.in',
         localVideoEl: 'localVideo',
         remoteVideosEl: 'remotes',
         autoRequestMedia: true,

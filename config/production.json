@@ -2,16 +2,35 @@
     "isDev": false,
     "app": {
         "port": "443",
-        "ip":   "10.3.0.144",
+        "ip":   "::",
         "host": "syno.in"
     },
     "resource": {
         "port": "8081",
-        "ip": "10.3.0.144"
+        "ip": "::"
     },
     "ssl": {
         "key":  "/etc/letsencrypt/live/syno.in/privkey.pem",
         "cert": "/etc/letsencrypt/live/syno.in/cert.pem",
         "ca":   "/etc/letsencrypt/live/syno.in/chain.pem"
+    },
+    "signalmaster": {
+        "isDev": false,
+        "logLevel": 3,
+        "rooms": {
+            "maxClients": 0 /* maximum number of clients per room. 0 = no limit */
+        },
+        "stunservers" : [
+            {"url": "stun:stun.syno.in:3478"}
+//        {"url": "stun:210.152.137.104:53"}
+        ],
+        "turnservers" : [
+            {
+                 "url": "turn:stun.syno.in:3478?transport=tcp",
+                 "username": "syno",
+                 "secret": "syno",
+                 "expiry": 86400
+            }
+        ]
     }
 }

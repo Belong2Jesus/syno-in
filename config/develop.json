@@ -10,8 +10,8 @@
         "ip": "127.0.0.1"
     },
     "ssl": {
-        "key":  "ssl_dev/key.pem",
-        "cert": "ssl_dev/cert.pem"
+        "key":  "/Users/van/Documents/work/syno-in/config/ssl_dev/key.pem",
+        "cert": "/Users/van/Documents/work/syno-in/config/ssl_dev/cert.pem"
     }
 }
 
