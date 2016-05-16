@@ -25,7 +25,8 @@
             #lcMic {position: relative}
             #lcVideo {position: relative}
             #lcFile {}
-            #lcDesk {}
+            #lcScreen {}
+            .x { display:none; position:absolute; left:0; top:0; height: 30px }
         #editor {position: absolute; right: 0; background-color: white; width: 30%; height: 100%; color: black}
         #footer { float: right }
       .volumeBar { position: absolute; width: 5px; height: 0px; right: 0px bottom: 0px; background-color: #12acef }
@@ -55,14 +56,17 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
         <div id="localControl">
           <div id=lcMic>
             <img src="m.png" height=30px>
-            <img id="xMic" src="x.png" height=30px style="display:none; position:absolute; left:0; top:0">
+            <img id="xMic" src="x.png" class="x">
           </div>
           <div id=lcVideo>
             <img src="c.png" height=30px>
-            <img id="xVideo" src="x.png" height=30px style="display:none; position:absolute; left:0; top:0">
+            <img id="xVideo" src="x.png" class="x">
+          </div>
+          <div id=lcScreen>
+            <img src="d.png" height=30px>
+            <img id="xScreen" src="x.png" class="x">
           </div>
           <img_ src="f.png" height=30px onclick=""><br>
-          <img_ src="d.png" height=30px onclick=""><br>
         </div>
       </div>
       <div id=editor contentEditable=true >
@@ -85,6 +89,12 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       lcVideo.addEventListener("mousedown", function(){bg(this,'pink');}, false);
       lcVideo.addEventListener("mouseup", function(){bg(this, 'gray');}, false);
       lcVideo.addEventListener("click", pause, false);
+      var lcScreen = document.getElementById("lcScreen");
+      lcScreen.addEventListener("mouseover", function(){bg(this, 'gray');}, false);
+      lcScreen.addEventListener("mouseout", function(){bg(this, 'transparent');}, false);
+      lcScreen.addEventListener("mousedown", function(){bg(this,'pink');}, false);
+      lcScreen.addEventListener("mouseup", function(){bg(this, 'gray');}, false);
+      lcScreen.addEventListener("click", shareScreen, false);
       function bg(el, cl){el.style.backgroundColor=cl;}
       function mute(){
         if (muted) {
@@ -105,6 +115,20 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
           document.getElementById("xVideo").style.display="";
         }
         paused=!(paused);
+      }
+      function shareScreen(){
+        if (webrtc.getLocalScreen()) {
+          webrtc.stopScreenShare();
+          document.getElementById("xScreen").style.display="none";
+        } else {
+          webrtc.shareScreen(function (err) {
+            if (err) {
+              document.getElementById("xScreen").style.display="none";
+            } else {
+              document.getElementById("xScreen").style.display="";
+            }
+          });
+        }
       }
     // connect to lobby
       var webrtc = new SimpleWebRTC({

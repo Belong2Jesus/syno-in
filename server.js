@@ -7,6 +7,7 @@ var https = require('https');
 var fs = require('fs');
 console.log(config);
 
+if (! config.isDev) {
 http.createServer(function (req, res) {
   if (req.url.indexOf("/.well-known/acme-challenge") == 0 &&
       fs.statSync(__dirname + "/letsencrypt" + req.url).isFile() ) {
@@ -17,6 +18,7 @@ http.createServer(function (req, res) {
   }
   res.end();
 }).listen(80, config.app.ip);
+}
 
 var options = {
   key:    fs.readFileSync(config.ssl.key),
