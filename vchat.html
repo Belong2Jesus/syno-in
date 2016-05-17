@@ -20,13 +20,15 @@
           #chatlog { word-wrap: break-word; overflow: hidden; width: 100%; color: white}
             #chatText { border-top: 1px solid blue }
         #LocalVideoConteiner { position: absolute; left: 40%; height: 100% ; }
+          .x { display:none; position:absolute; left:0; top:0; height: 30px }
           #localVideo { float: left; height: 100% }
           #localControl { float: left; background-color: white }
             #lcMic {position: relative}
             #lcVideo {position: relative}
-            #lcFile {}
-            #lcScreen {}
-            .x { display:none; position:absolute; left:0; top:0; height: 30px }
+            #lcScreen {position: relative}
+            .on { border : 10px aqua }
+            .error { border : 10px red }
+            #lcFile {position: relative}
         #editor {position: absolute; right: 0; background-color: white; width: 30%; height: 100%; color: black}
         #footer { float: right }
       .volumeBar { position: absolute; width: 5px; height: 0px; right: 0px bottom: 0px; background-color: #12acef }
@@ -35,6 +37,8 @@
       var room = location.pathname && location.pathname.substr(1);
       var muted = paused = false;
     </script>
+    <link rel="chrome-webstore-item"
+    href="https://chrome.google.com/webstore/detail/joljgcjedaaehhljacnpeadljljocmol">
   </head>
   <body>
     <div id="remotes">
@@ -56,15 +60,14 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
         <div id="localControl">
           <div id=lcMic>
             <img src="m.png" height=30px>
-            <img id="xMic" src="x.png" class="x">
+            <img id="xMic" src="x.png" class="x" style="display:none">
           </div>
           <div id=lcVideo>
             <img src="c.png" height=30px>
-            <img id="xVideo" src="x.png" class="x">
+            <img id="xVideo" src="x.png" class="x" style="display:none">
           </div>
           <div id=lcScreen>
             <img src="d.png" height=30px>
-            <img id="xScreen" src="x.png" class="x">
           </div>
           <img_ src="f.png" height=30px onclick=""><br>
         </div>
@@ -72,6 +75,8 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       <div id=editor contentEditable=true >
       </div>
     </div>
+<button onclick='chrome.webstore.install("https://chrome.google.com/webstore/detail/joljgcjedaaehhljacnpeadljljocmol"
+,function(err){console.log(err)}, function(err){console.log(err)})'>
     <div id=footer>
       <img src=ss.png width=200px>
     </div>
@@ -95,6 +100,7 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       lcScreen.addEventListener("mousedown", function(){bg(this,'pink');}, false);
       lcScreen.addEventListener("mouseup", function(){bg(this, 'gray');}, false);
       lcScreen.addEventListener("click", shareScreen, false);
+        
       function bg(el, cl){el.style.backgroundColor=cl;}
       function mute(){
         if (muted) {
@@ -102,7 +108,7 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
           document.getElementById("xMic").style.display="none";
         } else {
           webrtc.mute();
-          document.getElementById("xMic").style.display="";
+          document.getElementById("xMic").style.display="inline";
         }
         muted = !(muted);
       }
@@ -112,22 +118,30 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
           document.getElementById("xVideo").style.display="none";
         } else {
           webrtc.pauseVideo();
-          document.getElementById("xVideo").style.display="";
+          document.getElementById("xVideo").style.display="inline";
         }
-        paused=!(paused);
+        paused = !(paused);
       }
       function shareScreen(){
-        if (webrtc.getLocalScreen()) {
-          webrtc.stopScreenShare();
-          document.getElementById("xScreen").style.display="none";
+        if (chrome.app.isInstalled){
+          if (webrtc.getLocalScreen()) {
+            webrtc.stopScreenShare();
+            lcScreen.classList.remove ="on";
+          } else {
+            webrtc.shareScreen(function (err) {
+              if (err) {
+                lcScreen.classList.add ="err";
+                console.log(err); // ToDo: error
+              } else {
+                lcScreen.classList.add ="on";
+                document.getElementById("xScreen").style.display="";
+              }
+            });
+          }
         } else {
-          webrtc.shareScreen(function (err) {
-            if (err) {
-              document.getElementById("xScreen").style.display="none";
-            } else {
-              document.getElementById("xScreen").style.display="";
-            }
-          });
+          chrome.webstore.install(
+          "https://chrome.google.com/webstore/detail/joljgcjedaaehhljacnpeadljljocmol",
+          function (){ /* 認めて reload してね */ }, function (){})
         }
       }
     // connect to lobby
