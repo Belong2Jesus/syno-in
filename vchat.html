@@ -26,8 +26,8 @@
             #lcMic {position: relative}
             #lcVideo {position: relative}
             #lcScreen {position: relative}
-            .on { border : 10px aqua }
-            .error { border : 10px red }
+            .on { border : 1px solid aqua }
+            .error { border : 1px solid red }
             #lcFile {position: relative}
         #editor {position: absolute; right: 0; background-color: white; width: 30%; height: 100%; color: black}
         #footer { float: right }
@@ -69,14 +69,12 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
           <div id=lcScreen>
             <img src="d.png" height=30px>
           </div>
-          <img_ src="f.png" height=30px onclick=""><br>
+          <img_ src="f.png" height=30px><br>
         </div>
       </div>
       <div id=editor contentEditable=true >
       </div>
     </div>
-<button onclick='chrome.webstore.install("https://chrome.google.com/webstore/detail/joljgcjedaaehhljacnpeadljljocmol"
-,function(err){console.log(err)}, function(err){console.log(err)})'>
     <div id=footer>
       <img src=ss.png width=200px>
     </div>
@@ -125,29 +123,28 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       function shareScreen(){
         if (sessionStorage.getScreenMediaJSExtensionId = "joljgcjedaaehhljacnpeadljljocmol"){
           if (webrtc.getLocalScreen()) {
+            lcScreen.classList.remove("on");
             webrtc.stopScreenShare();
-            lcScreen.classList.remove ="on";
           } else {
             webrtc.shareScreen(function (err) {
               if (err) {
-                lcScreen.classList.add ="err";
+                // lcScreen.classList.add("err");
                 console.log(err); // ToDo: error
               } else {
-                lcScreen.classList.add ="on";
-                document.getElementById("xScreen").style.display="";
+                lcScreen.classList.add("on");
+                alignVideo();
               }
             });
           }
         } else {
           chrome.webstore.install(
           "https://chrome.google.com/webstore/detail/joljgcjedaaehhljacnpeadljljocmol",
-          function (){ /* 認めて reload してね */ }, function (){})
+          function (){ location.reload(true) }, function (){ /* todo: */ })
         }
       }
     // connect to lobby
       var webrtc = new SimpleWebRTC({
         url: location.origin,
-//        url: 'https://syno.in',
         localVideoEl: 'localVideo',
         remoteVideosEl: 'remotes',
         autoRequestMedia: true,
@@ -189,7 +186,7 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
           }
         }
       }
-      function videoAdd (video, peer){
+      function addVideo (video, peer){
         var remotes = document.getElementById('remotes');
         var container = document.createElement('div');
         container.className = 'videoContainer';
@@ -202,9 +199,51 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
         container.appendChild(vol);
         remotes.appendChild(container);
       }
-      webrtc.on('videoAdded', function (video, peer) {alignVideo();});
+      webrtc.on('videoAdded', function (video, peer) {
+        video.onclick = analyzeImage;
+        alignVideo();
+      });
       webrtc.on('videoRemoved', function (video, peer) { alignVideo();});
 
+    // Analyze Image
+      function analyzeImage(){
+        var _self = this;
+        var snap = document.getElementById("snap");
+        var context = snap.getContext("2d");
+        context.beginPath();
+        // context.rect(15, 0, 90, 90);
+        context.clip();
+        context.drawImage(_self, 0, 0, _self.width, _self.height);
+          var r = new XMLHttpRequest();
+          r.open("POST", "https://vision.googleapis.com/v1/images:annotate?key=" +
+                         "AIzaSyCepv-_QAsYMnxa93R9Iaeu7iXHC0_LvEk", true);
+          r.setRequestHeader("Content-Type","application/json");
+          r.onreadystatechange = function () {
+            // if (r.readyState != 4 || r.status != 200) return;
+            var res = document.createElement("div");
+            res.innerHTML = '<pre>' + r.responseText + '</pre>';
+            res.style.position = "absolute";
+            res.style.top = _self.getBoundingClientRect().top;
+            res.style.left = document.getElementById(_self.id).getBoundingClientRect().left;
+            res.style.height = _self.style.height;
+            res.style.width = _self.style.width;
+            _self.parentNode.appendChild(res);
+          };
+          // r.responseType = "json";
+          var data = {"requests": [ { 
+            "image": { "content": snap.toDataURL().replace('data:image/png;base64,','') }, 
+            "features": [ 
+                { "type": "FACE_DETECTION", "maxResults": 5},
+                { "type": "LANDMARK_DETECTION", "maxResults": 5},
+                { "type": "LOGO_DETECTION", "maxResults": 5},
+                { "type": "LABEL_DETECTION", "maxResults": 5},
+                { "type": "TEXT_DETECTION", "maxResults": 5},
+                { "type": "SAFE_SEARCH_DETECTION", "maxResults": 5},
+                { "type": "IMAGE_PROPERTIES", "maxResults": 5}
+          ]}]};
+console.log(data);
+          r.send(JSON.stringify(data));
+      }
     // chat
       webrtc.on('joinedRoom', function () {
         webrtc.sendDirectlyToAll("all", "chat", ""); // chat no omajinai

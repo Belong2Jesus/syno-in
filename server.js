@@ -27,7 +27,7 @@ var options = {
 if(config.ssl.ca){options.ca = fs.readFileSync(config.ssl.ca);}
 
 var server = https.createServer(options, function(req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.writeHead(200, {'Content-Type': 'text/html',"Access-Control-Allow-Origin": "*google*"});
   res.end( fs.readFileSync(__dirname + ( (req.url === "/") ? '/index.html' : '/vchat.html')));
 }).listen(config.app.port, config.app.ip);
 
