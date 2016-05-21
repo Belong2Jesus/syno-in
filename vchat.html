@@ -2,9 +2,16 @@
 <html>
   <head>
 <script type="text/javascript">
-  var x = document.createElement("BASE");
-  x.setAttribute("href", location.protocol + "//" + location.host.split(/:/, 1)[0] + ":8081");
-  document.head.appendChild(x);
+  //function (){
+    var base = document.createElement("BASE");
+    base.setAttribute("href", location.protocol + "//" + location.host.split(/:/, 1)[0] + ":8081");
+    document.head.appendChild(base);
+    var apikey = "joljgcjedaaehhljacnpeadljljocmol";
+    var link = document.createElement("LINK");
+    link.setAttribute("rel", "chrome-webstore-item");
+    link.setAttribute("href", "https://chrome.google.com/webstore/detail/joljgcjedaaehhljacnpeadljljocmol");
+    document.head.appendChild(link);
+  //}.();
 </script>
     <title>Syno</title>
     <script src="latest-v2.js"></script>
@@ -12,8 +19,12 @@
     <style>
       html { height: 100%; background: url("g.jpg"); background-size: cover }
       body { height: 100%; margin: 0; }
-      #remotes { text-align: center; border: 1px inset black; height: 80% }
-        #control { position: absolute; top: 0; right: 0 }
+      #remotes { border: 1px inset black; height: 80% }
+        .videoContainer { position: relative; display: inline-block; color: green; font-size: 8pt; overflow: scroll }
+          .remoteVideo { position: absolute; top: 0; left: 0; height: 100%; width: 100% }
+          .visionReport { position: absolute; top: 0; left: 0 height: 100%}
+          .volume { position: absolute; bottom: 5px; left: 20%; height: 5px; width: 50%}
+      #control { position: absolute; top: 0; right: 0 }
       #localBase { position: relative; height: 20%; }
         #chat { text-align: left; position: absolute; top 0; left: 0; width: 30% }
           #chatInput { width: 100% }
@@ -26,27 +37,21 @@
             #lcMic {position: relative}
             #lcVideo {position: relative}
             #lcScreen {position: relative}
-            .on { border : 1px solid aqua }
-            .error { border : 1px solid red }
-            #lcFile {position: relative}
+              .on { border : 1px solid aqua }
+              .error { border : 1px solid red }
+            #lcFile {position: relative; }
+              #uploadLabel {color: white; background-color: red; padding: 6px; border-radius: 12px;}
         #editor {position: absolute; right: 0; background-color: white; width: 30%; height: 100%; color: black}
         #footer { float: right }
-      .volumeBar { position: absolute; width: 5px; height: 0px; right: 0px bottom: 0px; background-color: #12acef }
     </style>
-    <script>
-      var room = location.pathname && location.pathname.substr(1);
-      var muted = paused = false;
-    </script>
-    <link rel="chrome-webstore-item"
-    href="https://chrome.google.com/webstore/detail/joljgcjedaaehhljacnpeadljljocmol">
   </head>
   <body>
-    <div id="remotes">
-      <div id="control">
-        <img src="r.png" height=50px onclick="location.reload()"><br>
-        <img src="e.png" width=50 height=50 
-onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%0D%0A&body=Hi%21%0D%0A%0D%0APlease%20open%20a%20URL%20as%20below%3A%0D%0A' + location.href ">
-      </div>
+    <div id="remotes"></div>
+    <div id="control">
+      <img src="r.png" height=50px onclick="location.reload()"><br>
+      <img src="e.png" width=50 height=50 onclick="location.href=
+        'mailto:?subject=Chatting%20via%20syno.in.%0D%0A&body=Hi%21%0D%0A%0D%0AClick%20below%3A%0D%0A'
+        + location.href ">
     </div>
     <div id=localBase>
       <div id=chat>
@@ -56,20 +61,24 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       </div>
       <div id="LocalVideoConteiner">
         <video id="localVideo"></video>
-        <div id="localVolume" class="volumeBar"></div>
+        <meter id="localVolume" class="volume" min="-45" max="-20" high="-25" low="-40"></meter>
         <div id="localControl">
           <div id=lcMic>
             <img src="m.png" height=30px>
             <img id="xMic" src="x.png" class="x" style="display:none">
           </div>
-          <div id=lcVideo>
+          <div id="lcVideo">
             <img src="c.png" height=30px>
             <img id="xVideo" src="x.png" class="x" style="display:none">
           </div>
-          <div id=lcScreen>
+          <div id="lcScreen">
             <img src="d.png" height=30px>
           </div>
-          <img_ src="f.png" height=30px><br>
+          <div id="lcFile">
+            <img src="f.png" height=30px style="-webkit-filter: grayscale(80%);" 
+              onclick="document.getElementById('uploadInput').click()">
+            <input type=file id="uploadInput" style="display:none">
+          </div>
         </div>
       </div>
       <div id=editor contentEditable=true >
@@ -79,7 +88,7 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       <img src=ss.png width=200px>
     </div>
     <script>
-    // Control
+    // Local Control
       var lcMic = document.getElementById("lcMic");
       lcMic.addEventListener("mouseover", function(){bg(this, 'gray');}, false);
       lcMic.addEventListener("mouseout", function(){bg(this, 'transparent');}, false);
@@ -98,7 +107,7 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       lcScreen.addEventListener("mousedown", function(){bg(this,'pink');}, false);
       lcScreen.addEventListener("mouseup", function(){bg(this, 'gray');}, false);
       lcScreen.addEventListener("click", shareScreen, false);
-        
+      var muted = paused = false;
       function bg(el, cl){el.style.backgroundColor=cl;}
       function mute(){
         if (muted) {
@@ -142,13 +151,17 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
           function (){ location.reload(true) }, function (){ /* todo: */ })
         }
       }
+
+
+
+
     // connect to lobby
       var webrtc = new SimpleWebRTC({
         url: location.origin,
         localVideoEl: 'localVideo',
-        remoteVideosEl: 'remotes',
+        remoteVideosEl: '',
         autoRequestMedia: true,
-//        detectSpeakingEvents: true,
+        detectSpeakingEvents: true,
 //        peerConnectionConfig: {iceServers:[
 //          {url: "stun:syno.in:53"},
 //          {url: "turn:stun.syno.in:53?transport=tcp", username: "synou", credential: "syno"}]},
@@ -160,51 +173,106 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
       webrtc.on('connectionReady', function () {
       });
       webrtc.on('readyToCall', function () {
-        webrtc.joinRoom(room);
+        webrtc.joinRoom(location.pathname.substr(1));
+      });
+      webrtc.on('localScreenAdded', function (el){
+        alignVideo();
       });
     // video resize
-      function alignVideo () {
-        var videos = document.getElementById("remotes").getElementsByTagName("video");
-        for (var i = 0, ii = videos.length; i < ii; i++) {
-          switch (ii) {
-            case 1:
-              videos[i].style.height = "100%";
-              videos[i].style.width = "";
-              break;
-            case 2:
-              videos[i].style.height = "";
-              videos[i].style.width = "50%";
-              break;
-            case 3:
-              videos[i].style.height = "";
-              videos[i].style.width = "33%";
-              break;
-            default :
-              videos[i].style.height = "50%";
-              videos[i].style.width = "";
-              break;
-          }
-        }
-      }
-      function addVideo (video, peer){
-        var remotes = document.getElementById('remotes');
+      webrtc.on('videoAdded', function (video, peer) {
+        video.className = "remoteVideo";
+        video.onclick = analyzeImage;
         var container = document.createElement('div');
         container.className = 'videoContainer';
         container.id = 'container_' + webrtc.getDomId(peer);
         container.appendChild(video);
         // show the remote volume
-        var vol = document.createElement('div');
-        vol.className = 'volumeBar';
+        var vol = document.createElement('meter');
         vol.id = 'volume_' + peer.id;
+        vol.className = 'volume';
+        vol.min = -45;
+        vol.max = -20;
+        vol.low = -40;
+        vol.high = -25;
         container.appendChild(vol);
-        remotes.appendChild(container);
-      }
-      webrtc.on('videoAdded', function (video, peer) {
-        video.onclick = analyzeImage;
+        document.getElementById('remotes').appendChild(container);
+        // receive file
+        peer.on('fileTransfer', function (metadata, receiver) {
+          console.log('incoming filetransfer', metadata);
+
+          // hook up receive progress
+          receiver.on('progress', function (bytesReceived) {
+          });
+          // get notified when file is done
+          receiver.on('receivedFile', function (file, metadata) {
+            console.log('received file', metadata.name, metadata.size);
+            var href = document.createElement('a');
+            href.href = URL.createObjectURL(file);
+            href.download = metadata.name;
+            href.appendChild(document.createTextNode(metadata.name));
+            var context = document.getElementById("snap").getContext("2d");
+            context.beginPath();
+            context.rect(15, 0, 90, 90);
+            context.clip();
+            context.drawImage(video, 0, 0, 120, 90);
+            var snap = document.getElementById("snap").toDataURL();
+            var html = '<div class=chatText><img style="float:left" width="60" src="' + snap + '">' +
+                '<a href="' + URL.createObjectURL(file) + '" download="' + metadata.name + '">' +
+                metadata.name + '</a><p style="clear:both"></p></div>';
+            apendChat(html);
+            // close the channel
+            receiver.channel.close();
+          });
+        });
         alignVideo();
       });
-      webrtc.on('videoRemoved', function (video, peer) { alignVideo();});
 
+
+
+      // send a file
+      document.getElementById("uploadInput").addEventListener('change', function() {
+        var _self = this;
+        _self.disabled = true;
+// todo: disabled=false when all is finished
+        var file = _self.files[0];
+        webrtc.getPeers().forEach( function (peer) {
+          var sender = peer.sendFile(file);
+          sender.on('progress', function (bytesSent) {
+            console.log(bytesSent);
+          });
+          sender.on('sentFile', function () {
+//            fileinput.removeAttribute('disabled'); // todo
+          });
+          sender.on('complete', function () {
+          });
+        });
+      }, false);
+
+
+
+      webrtc.on('videoRemoved', function (video, peer) {
+        var elid = (peer) ? 'container_' + webrtc.getDomId(peer) : 'localScreenContainer';
+        if ( document.getElementById(elid) ) {
+          document.getElementById('remotes').removeChild(document.getElementById(elid));
+        }
+        alignVideo();
+      });
+      function alignVideo () {
+        var rm = document.getElementById("remotes");
+        var vc = remotes.getElementsByClassName("videoContainer");
+        if (vc.length > 0){
+          var h = [100, 100,  50,  50,  50,  50,  33 ];
+          var w = [100,  50,  33,  33,  33,  33,  33 ];
+          if ( rm.offsetHeight * 680 / 320 < rm.offsetWidth ) {
+            h = [100,  50,  33,  33,  33,  33,  33 ];
+            w = [100, 100, 100,  50,  50,  50,  33 ];
+          }
+          for (var i = 0, ii = vc.length; i < ii; i++) {
+            vc[i].style.height = ( (ii > 6) ? h[6] : h[ii-1] ) + "%";
+            vc[i].style.width  = ( (ii > 6) ? w[6] : w[ii-1] ) + "%";
+          }
+        }
+      }
     // Analyze Image
       function analyzeImage(){
         var _self = this;
@@ -241,7 +309,6 @@ onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%
                 { "type": "SAFE_SEARCH_DETECTION", "maxResults": 5},
                 { "type": "IMAGE_PROPERTIES", "maxResults": 5}
           ]}]};
-console.log(data);
           r.send(JSON.stringify(data));
       }
     // chat
@@ -271,27 +338,22 @@ console.log(data);
       }
 
     // show volume
-      function showVolume(el, volume) {
-        if (!el) return;
-        if (volume < -45) { // vary between -45 and -20
-          el.style.height = '0px';
-        } else if (volume > -20) {
-          el.style.height = '100%';
-        } else {
-          el.style.height = '' + Math.floor((volume + 100) * 100 / 25 - 220) + '%';
-        }
-      }
-      // show the remote volume
-      function addVolume (video, peer){
-        var vol = document.createElement('div');
-        vol.id = 'volume_' + peer.id;
-        vol.className = 'volumeBar';
-        video.appendChild(vol);
-      }
-      // local volume has changed
-      webrtc.on('volumeChange', function (volume, treshold) {
-        showVolume(document.getElementById('localVolume'), volume);
-      });
+            function showVolume(el, volume) {
+              if(el){
+                if (volume < -45) volume = -45; // -45 to -20 is
+                if (volume > -20) volume = -20; // a good range
+                el.value = volume;
+              }
+            }
+
+            // local volume has changed
+            webrtc.on('volumeChange', function (volume, treshold) {
+                showVolume(document.getElementById('localVolume'), volume);
+            });
+            // remote volume has changed
+            webrtc.on('remoteVolumeChange', function (peer, volume) {
+                showVolume(document.getElementById('volume_' + peer.id), volume);
+            });
 
     // receive note change event
       ed = document.getElementById('editor');
