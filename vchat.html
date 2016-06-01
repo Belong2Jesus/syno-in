@@ -9,11 +9,13 @@
     var apikey = "joljgcjedaaehhljacnpeadljljocmol";
     var link = document.createElement("LINK");
     link.setAttribute("rel", "chrome-webstore-item");
-    link.setAttribute("href", "https://chrome.google.com/webstore/detail/joljgcjedaaehhljacnpeadljljocmol");
+    link.setAttribute("href", "https://chrome.google.com/webstore/detail/" + apikey);
     document.head.appendChild(link);
   //}.();
 </script>
     <title>Syno</title>
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <script src="semantic/dist/semantic.min.js"></script>
     <script src="latest-v2.js"></script>
     <script src="socket.io.js"></script>
     <style>
@@ -130,7 +132,7 @@
         paused = !(paused);
       }
       function shareScreen(){
-        if (sessionStorage.getScreenMediaJSExtensionId = "joljgcjedaaehhljacnpeadljljocmol"){
+        if (sessionStorage.getScreenMediaJSExtensionId == apikey){
           if (webrtc.getLocalScreen()) {
             lcScreen.classList.remove("on");
             webrtc.stopScreenShare();
@@ -147,8 +149,8 @@
           }
         } else {
           chrome.webstore.install(
-          "https://chrome.google.com/webstore/detail/joljgcjedaaehhljacnpeadljljocmol",
-          function (){ location.reload(true) }, function (){ /* todo: */ })
+          "https://chrome.google.com/webstore/detail/" + apikey,
+          function (){ location.reload(true) }, function (){ /* todo: */ });
         }
       }
 
@@ -261,8 +263,8 @@
         var rm = document.getElementById("remotes");
         var vc = remotes.getElementsByClassName("videoContainer");
         if (vc.length > 0){
-          var h = [100, 100,  50,  50,  50,  50,  33 ];
-          var w = [100,  50,  33,  33,  33,  33,  33 ];
+          var h = [100, 100,  49,  49,  49,  49,  33 ];
+          var w = [100,  49,  33,  33,  33,  33,  33 ];
           if ( rm.offsetHeight * 680 / 320 < rm.offsetWidth ) {
             h = [100,  50,  33,  33,  33,  33,  33 ];
             w = [100, 100, 100,  50,  50,  50,  33 ];
