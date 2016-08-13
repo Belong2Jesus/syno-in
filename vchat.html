@@ -2,6 +2,7 @@
 <html>
   <head>
 <script type="text/javascript">
+sessionStorage.getScreenMediaJSExtensionId = "";
   //function (){
     var base = document.createElement("BASE");
     base.setAttribute("href", location.protocol + "//" + location.host.split(/:/, 1)[0] + ":8081");
@@ -13,126 +14,149 @@
     document.head.appendChild(link);
   //}.();
 </script>
-    <title>Syno</title>
-    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
-    <script src="semantic/dist/semantic.min.js"></script>
+    <title>Syno IN</title>
+    <link href='https://fonts.googleapis.com/css?family=Advent+Pro:100' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.js"></script>
     <script src="latest-v2.js"></script>
     <script src="socket.io.js"></script>
+
+    <link rel="stylesheet" type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
     <style>
-      html { height: 100%; background: url("g.jpg"); background-size: cover }
-      body { height: 100%; margin: 0; }
-      #remotes { border: 1px inset black; height: 80% }
-        .videoContainer { position: relative; display: inline-block; color: green; font-size: 8pt; overflow: scroll }
-          .remoteVideo { position: absolute; top: 0; left: 0; height: 100%; width: 100% }
-          .visionReport { position: absolute; top: 0; left: 0 height: 100%}
-          .volume { position: absolute; bottom: 5px; left: 20%; height: 5px; width: 50%}
-      #control { position: absolute; top: 0; right: 0 }
-      #localBase { position: relative; height: 20%; }
-        #chat { text-align: left; position: absolute; top 0; left: 0; width: 30% }
-          #chatInput { width: 100% }
-          #chatlog { word-wrap: break-word; overflow: hidden; width: 100%; color: white}
-            #chatText { border-top: 1px solid blue }
-        #LocalVideoConteiner { position: absolute; left: 40%; height: 100% ; }
-          .x { display:none; position:absolute; left:0; top:0; height: 30px }
-          #localVideo { float: left; height: 100% }
-          #localControl { float: left; background-color: white }
-            #lcMic {position: relative}
-            #lcVideo {position: relative}
-            #lcScreen {position: relative}
+      html { height: 100%; width: 100%; }
+      body { height: 100%; width: 100%; overflow: hiddeeeeeeeeeeeeeeeeeen; }
+      #itemList { height: 80%; width: 19%; display: inline-block; }
+        #LocalVideoConteiner { position: relative;  }
+          #localVideo { }
               .on { border : 1px solid aqua }
               .error { border : 1px solid red }
-            #lcFile {position: relative; }
-              #uploadLabel {color: white; background-color: red; padding: 6px; border-radius: 12px;}
-        #editor {position: absolute; right: 0; background-color: white; width: 30%; height: 100%; color: black}
-        #footer { float: right }
+          #localControles { position: absolute; top: 0; right: 0; }
+        .videoContainer {  }
+          .remoteVideo { border-radius: 20px; }
+          .visionReport { position: absolute; top: 0; left: 0 }
+          .volume { position: absolute; bottom: 2px; left: 20%; height: 5px; width: 50%}
+      #pickup { height: 80%; width: 80%; display: inline-block; }
+        #first { position: absolute; top: 0; left: 0 }
+      #head { position: absolute; top: 0; left: 0 }
+        #title { position: relative; top: 8px; left: 10px; font-family: 'Advent Pro', sans-serif; font-size: 42px; }
+      #profile { position: absolute; top: 0; right: 0 }
+      #localBase { position: relative; height: 20%; }
+        #chat { position: absolute; height: 100%; width: 30% ; overflow: scroll; }
+        #editorArea { position: absolute;  right: 0; width: 30%; height: 100%; }
+          #editor {height: 100%; width: 100%; }
     </style>
   </head>
   <body>
-    <div id="remotes"></div>
-    <div id="control">
-      <img src="r.png" height=50px onclick="location.reload()"><br>
-      <img src="e.png" width=50 height=50 onclick="location.href=
-        'mailto:?subject=Chatting%20via%20syno.in.%0D%0A&body=Hi%21%0D%0A%0D%0AClick%20below%3A%0D%0A'
-        + location.href ">
-    </div>
-    <div id=localBase>
-      <div id=chat>
-        <input id="chatInput" type=text onChange="sendChat(this)" x-webkit-speech>
-        <div id="chatLog"></div>
-        <canvas id="snap" width="120" height="90" style="display:none"></canvas>
-      </div>
-      <div id="LocalVideoConteiner">
-        <video id="localVideo"></video>
-        <meter id="localVolume" class="volume" min="-45" max="-20" high="-25" low="-40"></meter>
-        <div id="localControl">
-          <div id=lcMic>
-            <img src="m.png" height=30px>
-            <img id="xMic" src="x.png" class="x" style="display:none">
-          </div>
-          <div id="lcVideo">
-            <img src="c.png" height=30px>
-            <img id="xVideo" src="x.png" class="x" style="display:none">
-          </div>
-          <div id="lcScreen">
-            <img src="d.png" height=30px>
-          </div>
-          <div id="lcFile">
-            <img src="f.png" height=30px style="-webkit-filter: grayscale(80%);" 
-              onclick="document.getElementById('uploadInput').click()">
+    <div id="itemList">
+      <div class="ui compact big menu"></div>
+      <div id="LocalVideoConteiner" class="ui raised segment">
+        <a class="ui red ribbon label">You</a>
+          <video id="localVideo"></video>
+          <meter id="localVolume" class="volume" min="-45" max="-20" high="-25" low="-40"></meter>
+        <div id="localControles" class="ui vertical icon buttons">
+          <div class="ui button" onclick="mute()"><i class="unmute icon"></i></div>
+          <div class="ui button" onclick="pause()"><i class="video camera icon"></i></div>
+          <div class="ui button" onclick="shareScreen()"><i class="desktop icon"></i></div>
+          <div class="ui button" onclick="document.getElementById('uploadInput').click()">
+            <i class="send icon"></i>
             <input type=file id="uploadInput" style="display:none">
           </div>
         </div>
       </div>
-      <div id=editor contentEditable=true >
+    </div>
+    <div id="pickup">
+      <div id="localLoading" class="ui indeterminate text active loader">Waiting others...</div>
+      <div id="first" class="ui success message">
+        <div class="content">
+          <div id="firstMessage" class="header"></div>
+          <p>You are the 1st to join. Please stand by or invite friends to this room.</p>
+        </div>
       </div>
     </div>
-    <div id=footer>
-      <img src=ss.png width=200px>
+<div id="head" class="ui compact big menu">
+  <span id="title" onclick="location.pathname='/';">syn<font color=teal>o</font>.in</span>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <div id="room" class="ui large tag label">
+    <div class="ui pointing dropdown">
+      <i class="home big icon"></i><span id="roomName" class="ui huge text"></span>
+      <div class="menu" id="roomMenu">
+            <a class="item" data-content="If you have a trouble, please reload the page."
+              onclick="location.reload()"><i class="circle notched icon"></i>Reload</a>
+            <a class="item"><i class="users icon"></i>Invite<i class="right dropdown icon"></i>
+            </a>
+              <div class="menu">
+                <a class="item" data-content="Open your default mail client." onclick="location.href=
+                  'mailto:?subject=Chatting%20via%20syno.in.%0D%0A&body=Hi%21%0D%0A%0D%0AClick%20below%3A%0D%0A'
+                  + location.href "><i class="mail outline icon"></i>Mail</a>
+                <a class="item" onclick="" data-content="Copy the URL link to this room.">
+                  <i class="linkify icon"></i>Copy</a>
+              </div>
+            <a class="item" data-content="Set password to this room."><i class="unlock icon"></i>Lock</a>
+            <a class="item" onclick="location.pathname='/';" data-content="Leave from this room">
+              <i class="sign out icon"></i>Leave</a>
+      </div>
+    </div>
+  </div>
+</div>
+    <div id="profile" class="ui compact basic segment" onclick="$('#setName').modal('show');">
+      <a class="item" ><i class="user icon"></i><span id="name">[Anonymous]</span></a>
+      <div class="ui modal" id="setName">
+        <div class="header">Set nickname</div>
+        <div class="content">
+          <div class="ui fluid input">
+            <input type="text" placeholder="Your name">
+          </div>
+        </div>
+        <div class="actions">
+          <div class="ui left black deny button">Nope</div>
+          <div class="ui positive right labeled icon button">Set name<i class="checkmark icon"></i></div>
+        </div>
+      </div>
+    </div>
+    <div id=localBase>
+      <div id=chat class="ui comments">
+        <div class="ui fluid left icon input">
+          <input type="text" placeholder="Hi all..." id="chatInput" onChange="sendChat(this)"
+           data-content="Send text chat message.">
+          <canvas id="snap" width="120" height="90" style="display:none"></canvas>
+          <i class="talk outline icon"></i>
+        </div>
+        <div id="chatLog" class="comments"></div>
+      </div>
+      <div id="editorArea" class="ui fluid left icon texarea">
+        <!-- <i class="file text outline icon"></i> -->
+        <textarea id="editor" placeholder="Collaboration note" 
+          data-content="This box is synchronized to friends in this room."></textarea>
+      </div>
     </div>
     <script>
+      $('.dropdown').dropdown({on: 'hover',action: 'none'});
+      $('#roomMenu > .item').popup({position: 'right center'});
+      $('#chatInput, #editor').popup({on: 'focus'});
+      document.getElementById("firstMessage").innerText = "Welcome to " + location.pathname.substr(1);
+      document.getElementById("roomName").innerText = location.pathname.substr(1);
     // Local Control
-      var lcMic = document.getElementById("lcMic");
-      lcMic.addEventListener("mouseover", function(){bg(this, 'gray');}, false);
-      lcMic.addEventListener("mouseout", function(){bg(this, 'transparent');}, false);
-      lcMic.addEventListener("mousedown", function(){bg(this,'pink');}, false);
-      lcMic.addEventListener("mouseup", function(){bg(this, 'gray');}, false);
-      lcMic.addEventListener("click", mute, false);
-      var lcVideo = document.getElementById("lcVideo");
-      lcVideo.addEventListener("mouseover", function(){bg(this, 'gray');}, false);
-      lcVideo.addEventListener("mouseout", function(){bg(this, 'transparent');}, false);
-      lcVideo.addEventListener("mousedown", function(){bg(this,'pink');}, false);
-      lcVideo.addEventListener("mouseup", function(){bg(this, 'gray');}, false);
-      lcVideo.addEventListener("click", pause, false);
-      var lcScreen = document.getElementById("lcScreen");
-      lcScreen.addEventListener("mouseover", function(){bg(this, 'gray');}, false);
-      lcScreen.addEventListener("mouseout", function(){bg(this, 'transparent');}, false);
-      lcScreen.addEventListener("mousedown", function(){bg(this,'pink');}, false);
-      lcScreen.addEventListener("mouseup", function(){bg(this, 'gray');}, false);
-      lcScreen.addEventListener("click", shareScreen, false);
       var muted = paused = false;
-      function bg(el, cl){el.style.backgroundColor=cl;}
       function mute(){
         if (muted) {
           webrtc.unmute();
-          document.getElementById("xMic").style.display="none";
         } else {
           webrtc.mute();
-          document.getElementById("xMic").style.display="inline";
         }
         muted = !(muted);
       }
       function pause(){
-        if(paused) {
+        if (paused) {
           webrtc.resumeVideo();
-          document.getElementById("xVideo").style.display="none";
         } else {
           webrtc.pauseVideo();
-          document.getElementById("xVideo").style.display="inline";
         }
         paused = !(paused);
       }
       function shareScreen(){
         if (sessionStorage.getScreenMediaJSExtensionId == apikey){
+          var lcScreen = document.getElementById("lcScreen");
           if (webrtc.getLocalScreen()) {
             lcScreen.classList.remove("on");
             webrtc.stopScreenShare();
@@ -149,13 +173,10 @@
           }
         } else {
           chrome.webstore.install(
-          "https://chrome.google.com/webstore/detail/" + apikey,
-          function (){ location.reload(true) }, function (){ /* todo: */ });
+            "https://chrome.google.com/webstore/detail/" + apikey,
+            function (){ location.reload(true) }, function (){ /* todo: */ });
         }
       }
-
-
-
 
     // connect to lobby
       var webrtc = new SimpleWebRTC({
@@ -168,7 +189,7 @@
 //          {url: "stun:syno.in:53"},
 //          {url: "turn:stun.syno.in:53?transport=tcp", username: "synou", credential: "syno"}]},
 //          {url: "turn:syno.in:53", username: "synou", credential: "syno"}]},
-        media: { video: { mandatory: { maxWidth: 320, maxHeight: 240, maxFrameRate: 8 } }, 
+        media: { video: { mandatory: { maxWidth: 160, maxHeight: 120, maxFrameRate: 5 } }, 
                  audio: true }
       });
     // join session
@@ -177,15 +198,32 @@
       webrtc.on('readyToCall', function () {
         webrtc.joinRoom(location.pathname.substr(1));
       });
-      webrtc.on('localScreenAdded', function (el){
+    // start share screen
+      webrtc.on('localScreenAdded', function (v){
+        v.className = "remoteVideo";
+        var container = document.createElement('div');
+        container.className = 'remoteVideo';
+        container.id = 'container_' + "localScreen";
+        container.appendChild(v);
+        document.getElementById('itemList').appendChild(container);
         alignVideo();
       });
-    // video resize
+    // stop share screen
+      webrtc.on('localScreenRemoved', function (v) {
+        document.getElementById('itemList').removeChild(document.getElementById('container_' + "localScreen"));
+        alignVideo();
+      });
+    // hoge
+      webrtc.on('createdPeer', function (p) {
+      });
+
+    // video add
       webrtc.on('videoAdded', function (video, peer) {
         video.className = "remoteVideo";
-        video.onclick = analyzeImage;
+        video.onclick = function (video) {analyzeImage(this);};
         var container = document.createElement('div');
         container.className = 'videoContainer';
+//        container.classList.add("card");
         container.id = 'container_' + webrtc.getDomId(peer);
         container.appendChild(video);
         // show the remote volume
@@ -197,7 +235,10 @@
         vol.low = -40;
         vol.high = -25;
         container.appendChild(vol);
-        document.getElementById('remotes').appendChild(container);
+        var content = document.createElement('div');
+        content.innerHTML= "[Anonymous] "+ new Date().toLocaleTimeString();
+        container.appendChild(content);
+        document.getElementById('itemList').appendChild(container);
         // receive file
         peer.on('fileTransfer', function (metadata, receiver) {
           console.log('incoming filetransfer', metadata);
@@ -206,84 +247,93 @@
           receiver.on('progress', function (bytesReceived) {
           });
           // get notified when file is done
-          receiver.on('receivedFile', function (file, metadata) {
+          receiver.on('receivedFile', receiveFile);
+          // receive a file
+          function receiveFile(file, metadata){
             console.log('received file', metadata.name, metadata.size);
-            var href = document.createElement('a');
-            href.href = URL.createObjectURL(file);
-            href.download = metadata.name;
-            href.appendChild(document.createTextNode(metadata.name));
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(file);
+            a.download = metadata.name;
+            a.appendChild(document.createTextNode(metadata.name));
+            var chat = { snap: getSnapDataURL(video), link: a };
+            appendChat(chat);
+            // close the channel
+            receiver.channel.close();
+          }
+        });
+        alignVideo();
+      });
+      function getSnapDataURL(v){
             var context = document.getElementById("snap").getContext("2d");
             context.beginPath();
             context.rect(15, 0, 90, 90);
             context.clip();
-            context.drawImage(video, 0, 0, 120, 90);
-            var snap = document.getElementById("snap").toDataURL();
-            var html = '<div class=chatText><img style="float:left" width="60" src="' + snap + '">' +
-                '<a href="' + URL.createObjectURL(file) + '" download="' + metadata.name + '">' +
-                metadata.name + '</a><p style="clear:both"></p></div>';
-            apendChat(html);
-            // close the channel
-            receiver.channel.close();
-          });
-        });
-        alignVideo();
-      });
-
-
-
-      // send a file
+            context.drawImage(v, 0, 0, 120, 90);
+            return document.getElementById("snap").toDataURL();
+      }
+      // send file
       document.getElementById("uploadInput").addEventListener('change', function() {
         var _self = this;
         _self.disabled = true;
-// todo: disabled=false when all is finished
         var file = _self.files[0];
         webrtc.getPeers().forEach( function (peer) {
           var sender = peer.sendFile(file);
           sender.on('progress', function (bytesSent) {
             console.log(bytesSent);
           });
-          sender.on('sentFile', function () {
-//            fileinput.removeAttribute('disabled'); // todo
-          });
           sender.on('complete', function () {
           });
         });
+        // TODO: should check whether all transfer is completed.
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(file);
+        a.download = file.name;
+        a.appendChild(document.createTextNode(file.name));
+        appendChat({snap: getSnapDataURL(document.getElementById("localVideo")), link: a });
+        _self.disabled = false; // _self.removeAttribute('disabled');
       }, false);
 
-
-
+    // Video removed
       webrtc.on('videoRemoved', function (video, peer) {
         var elid = (peer) ? 'container_' + webrtc.getDomId(peer) : 'localScreenContainer';
         if ( document.getElementById(elid) ) {
-          document.getElementById('remotes').removeChild(document.getElementById(elid));
+          document.getElementById('itemList').removeChild(document.getElementById(elid));
         }
         alignVideo();
       });
-      function alignVideo () {
+   // Video align 
+      function alignVideo (mode, pin) {
         var rm = document.getElementById("remotes");
-        var vc = remotes.getElementsByClassName("videoContainer");
+        var vc = rm.getElementsByClassName("videoContainer");
         if (vc.length > 0){
-          var h = [100, 100,  49,  49,  49,  49,  33 ];
-          var w = [100,  49,  33,  33,  33,  33,  33 ];
-          if ( rm.offsetHeight * 680 / 320 < rm.offsetWidth ) {
-            h = [100,  50,  33,  33,  33,  33,  33 ];
-            w = [100, 100, 100,  50,  50,  50,  33 ];
+          document.getElementById('first').style.display = "none";
+          if (mode == "loud"){
+            ;
+          } else if (mode == "pin") {
+            ;
+          } else if (mode == "equal" || ! mode ){
+            var h = [100, 100,  49,  49,  49,  49,  33 ];
+            var w = [100,  49,  33,  33,  33,  33,  33 ];
+            if ( rm.offsetHeight * 680 / 320 < rm.offsetWidth ) {
+              h = [100,  49,  33,  33,  33,  33,  33 ];
+              w = [100, 100,  49,  49,  49,  49,  33 ];
+            }
+            for (var i = 0, ii = vc.length; i < ii; i++) {
+//              vc[i].style.height = ( (ii > 6) ? h[6] : h[ii-1] ) + "%";
+//              vc[i].style.width  = ( (ii > 6) ? w[6] : w[ii-1] ) + "%";
+            }
           }
-          for (var i = 0, ii = vc.length; i < ii; i++) {
-            vc[i].style.height = ( (ii > 6) ? h[6] : h[ii-1] ) + "%";
-            vc[i].style.width  = ( (ii > 6) ? w[6] : w[ii-1] ) + "%";
-          }
+        } else {
+          document.getElementById("first").style.display = "inline";
         }
       }
     // Analyze Image
-      function analyzeImage(){
-        var _self = this;
+      function analyzeImage(v){
         var snap = document.getElementById("snap");
         var context = snap.getContext("2d");
         context.beginPath();
-        // context.rect(15, 0, 90, 90);
         context.clip();
-        context.drawImage(_self, 0, 0, _self.width, _self.height);
+        context.drawImage(v, 0, 0, v.videoWidth, v.videoHeight);
           var r = new XMLHttpRequest();
           r.open("POST", "https://vision.googleapis.com/v1/images:annotate?key=" +
                          "AIzaSyCepv-_QAsYMnxa93R9Iaeu7iXHC0_LvEk", true);
@@ -293,11 +343,9 @@
             var res = document.createElement("div");
             res.innerHTML = '<pre>' + r.responseText + '</pre>';
             res.style.position = "absolute";
-            res.style.top = _self.getBoundingClientRect().top;
-            res.style.left = document.getElementById(_self.id).getBoundingClientRect().left;
-            res.style.height = _self.style.height;
-            res.style.width = _self.style.width;
-            _self.parentNode.appendChild(res);
+            res.style.top = v.getBoundingClientRect().top;
+            res.style.left = document.getElementById(v.id).getBoundingClientRect().left;
+            v.parentNode.appendChild(res);
           };
           // r.responseType = "json";
           var data = {"requests": [ { 
@@ -313,49 +361,67 @@
           ]}]};
           r.send(JSON.stringify(data));
       }
-    // chat
+    // send chat
       webrtc.on('joinedRoom', function () {
         webrtc.sendDirectlyToAll("all", "chat", ""); // chat no omajinai
         webrtc.sendDirectlyToAll("all", "note", ""); // chat no omajinai
       });
       function sendChat(_text) {
-        var context = document.getElementById("snap").getContext("2d");
-        context.beginPath();
-        context.rect(15, 0, 90, 90);
-        context.clip();
-        context.drawImage(document.getElementById("localVideo"),0, 0, 120, 90);
-        var snap = document.getElementById("snap").toDataURL();
-        var html = '<div class=chatText><img style="float:left" width="60" src="' + snap + '">' + 
-            _text.value.replace(/((http:|https:)\/\/[\x21-\x26\x28-\x7e]+)/gi,
-              "<a href='$1' target=_blank>$1</a>") + '<p style="clear:both"></p></div>';
-        webrtc.sendDirectlyToAll("all", "chat", html);
-        apendChat(html);
+        var chat = {snap: getSnapDataURL(document.getElementById("localVideo")), text: _text.value};
+        webrtc.sendDirectlyToAll("all", "chat", chat);
+        appendChat(chat);
         _text.value = '';
       }
-      function apendChat(_text){
-        var newElement = document.createElement('div');
-        newElement.innerHTML = _text;
+      function escapeHTML(text){
+        return text.replace(/[&'`"<>]/g, function(match) {
+          return {'&': '&amp;', "'": '&#x27;', '`': '&#x60;', '"': '&quot;','<': '&lt;','>': '&gt;',}[match]
+          }).replace(/((http:|https:)\/\/[\x21-\x26\x28-\x7e]+)/gi,"<a href='$1' target=_blank>$1</a>");
+      }
+      function appendChat(chat){
+        var chatDiv = document.createElement('div');
+        chatDiv.className = "comment";
+        chatDiv.id = new Date().getTime();
+        var avatar = document.createElement('a');
+        avatar.className = "avatar";
+        chatDiv.appendChild(avatar);
+        var img = document.createElement('img');
+        img.style.height = 60;
+        img.src = chat.snap;
+        avatar.appendChild(img);
+        var content = document.createElement('div');
+        content.className = "content";
+        chatDiv.appendChild(content);
+        var text = document.createElement('div');
+        text.className = "text";
+        if (chat.hasOwnProperty('text')) {
+          text.innerHTML = escapeHTML(chat.text);
+        } else if (chat.hasOwnProperty('link')) {
+          text.appendChild(chat.link);
+        }
+        content.appendChild(text);
         var parentElement = document.getElementById("chatLog");
-        parentElement.insertBefore(newElement, parentElement.firstChild);
+        parentElement.insertBefore(chatDiv, parentElement.firstChild);
+        $("#" + chatDiv.id).hide().transition('fly down');
       }
 
     // show volume
-            function showVolume(el, volume) {
-              if(el){
-                if (volume < -45) volume = -45; // -45 to -20 is
-                if (volume > -20) volume = -20; // a good range
-                el.value = volume;
-              }
-            }
+      function showVolume(el, volume) {
+        if(el){
+          if (volume < -45) volume = -45; // -45 to -20 is
+          if (volume > -20) volume = -20; // a good range
+          el.value = volume;
+        }
+      }
 
-            // local volume has changed
-            webrtc.on('volumeChange', function (volume, treshold) {
-                showVolume(document.getElementById('localVolume'), volume);
-            });
-            // remote volume has changed
-            webrtc.on('remoteVolumeChange', function (peer, volume) {
-                showVolume(document.getElementById('volume_' + peer.id), volume);
-            });
+    // local volume has changed
+      webrtc.on('volumeChange', function (volume, treshold) {
+        showVolume(document.getElementById('localVolume'), volume);
+      });
+
+    // remote volume has changed
+      webrtc.on('remoteVolumeChange', function (peer, volume) {
+        showVolume(document.getElementById('volume_' + peer.id), volume);
+      });
 
     // receive note change event
       ed = document.getElementById('editor');
@@ -369,7 +435,6 @@
           var range = sel.getRangeAt(0);
           var pos = range.startOffset;
           ed.innerHTML = mod.text;
-console.log(mod.pos, pos);
           if (mod.pos < pos){
             range.setStart(ed, pos);
             range.setEnd(sel.baseNode, pos);
@@ -387,7 +452,7 @@ console.log(mod.pos, pos);
       }
       webrtc.on('channelMessage', function (peer, label, data, ch, ev) {
         if (data.type == 'chat') {
-          apendChat(data.payload);
+          appendChat(data.payload);
         } else if (data.type == 'volume') {
           showVolume(document.getElementById('volume_' + peer.id), data.volume);
         } else if (data.type == 'note') {
@@ -409,9 +474,4 @@ console.log(mod.pos, pos);
 
   </body>
 </html>
-
-
-
-
-
 

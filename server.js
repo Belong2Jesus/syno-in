@@ -1,6 +1,7 @@
 #!/bin/env node
 var config = require('config');
 var connect = require('connect');
+var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
 var http = require('http');
 var https = require('https');
@@ -27,13 +28,21 @@ var options = {
 if(config.ssl.ca){options.ca = fs.readFileSync(config.ssl.ca);}
 
 var server = https.createServer(options, function(req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html',"Access-Control-Allow-Origin": "*google*"});
+  res.writeHead(200, {'Content-Type': 'text/html',"Access-Control-Allow-Origin": '*'});
   res.end( fs.readFileSync(__dirname + ( (req.url === "/") ? '/index.html' : '/vchat.html')));
 }).listen(config.app.port, config.app.ip);
 
-var resource = connect().use(connect.static(__dirname + '/pub'));
-https.createServer(options,resource).listen(config.resource.port, config.resource.ip);
+// var resource = connect().use(connect.static(__dirname + '/pub'));
+// https.createServer(options,resource).listen(config.resource.port, config.resource.ip);
 
+function setHeaders(res, path) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+}
+var serve = serveStatic(__dirname + '/pub', {'setHeaders': setHeaders});
+https.createServer(options, function onRequest (req, res) {
+  serve(req, res, finalhandler(req, res))
+}).listen(config.resource.port, config.resource.ip);
+ 
 var signalmasterSockets = require('./signalmaster/sockets');
 signalmasterSockets(server, config.signalmaster );
 

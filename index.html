@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-
 <script type="text/javascript">
   var x = document.createElement("BASE");
   x.setAttribute("href", location.protocol + "//" + location.host.split(/:/, 1)[0] + ":8081");
@@ -9,108 +8,67 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-<title></title>
+<title>Syno IN</title>
+<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="semantic/dist/semantic.min.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Advent+Pro:100' rel='stylesheet' type='text/css'>
 <style>
-  html { height: 100%; color: #ffffff; background-color: #000000; background: url("g.jpg"); background-size: cover; }
-  body { height: 100%; margin: 0 auto; padding: 0; text-align: center; }
-  #header { float: right }
-  #intro { clear: both; height: 25%; width: 90%; margin: 0 auto; font-family: 'Advent Pro', sans-serif; font-size: 800%; }
-  #room { height: 30%; width: 90%; margin: 0 auto }
-  #share { height: 15%; width: 90%; margin: 0 auto }
-  #footer { height: 20%; width: 90%; margin: 0 auto }
-
-input#go {
-    padding: 15px 40px;
-    font-size: 1.2em;
-    background-color: gray;
-    color: black;
-}
-.firepad {
-  width: 100%;
-  height: 250px;
-}
-
-.CodeMirror {
-  width: 100%;
-  height: 450px;
-  background-color: #f62;
-}
+  html { height: 100%; }
+  body { height: 100%; margin: 0 auto; padding: 0; text-align: center;
+        /* background: url("g.jpg"); background-size: cover; */ }
+  #header { text-align: right; height: 20%; }
+  #title { height: 25%; font-family: 'Advent Pro', sans-serif; font-size: 800%; }
+  #room { height: 45%; }
+  #footer { height: 10%; }
 
 </style>
-<script>
-var rid = (function(){
-    var S4 = function() {
-        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-    }   
-    return (S4()+S4()+S4()+S4()+S4()+S4()+S4()+S4());
-})();
-var rurl = location.href + rid;
-</script>
-<!-- Firebase -->
-<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
-
-<!-- CodeMirror -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.css" />
-
-<!-- Firepad -->
-<link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.1.1/firepad.css" />
-<script src="https://cdn.firebase.com/libs/firepad/1.1.1/firepad.min.js"></script>
-
 </head>
 <body>
 
 <div id="header">
-<a href="http://kikyu.iwaya.biz/"><img src="ss.png" width=200px></a>
+<!-- <a href="http://kikyu.iwaya.biz/"><img src="ss.png" width=200px></a> -->
+<a href="http://syno.jp">About us</a>
 </div>
 
-<div id="intro">
-syno.in
+<div id="title">
+syn<font color=lime>o</font>.in
 </div>
 
-<div id="room" visible=false>
+<div id="room">
+  <p>
+  Invite friends to your video conversation room
+  </p>
 <p>
-<form name="id">
- Your room -&gt; <input type=text id="rid" size=60 readonly>
-<script> document.getElementById('rid').value = rurl; </script>
- <!-- input type="button" value='copy' onClick='document.getElementById('rid').select(); document.execCommand("copy");' -->
-</form>
-</p>
-<p>
-Share the room URL.<br>
-<img src="e.png" width=80 height=80
-onclick="location.href='mailto:?subject=Let%27s%20video%20chat%20via%20syno.in.%0D%0A&body=Hi%21%0D%0A%0D%0APlease%20open%20a%20URL%20as%20below%3A%0D%0A' + rurl;">
-
-
-</p>
-
-</div>
-
-<div id="share">
-<form name="go">
-<p>
-<input id="go" type=button value="Into the Room" onclick="location.href=rurl" style="font-size:200%; height: 80px; width: 300px;" >
-</p>
-</form>
-
-</div>
-
-<div id="firepadd"></div>
 <script>
-  var firepadRef = new Firebase('https://van.firebaseio.com/firepads/1');
-  var codeMirror = CodeMirror(document.getElementById('firepad'), { lineWrapping: true });
-  var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror,
-      { richTextShortcuts: true, richTextToolbar: true, defaultText: 'Hello, World!' });
+  function start(){
+    var x = document.getElementById('rid');
+    if (x.value) {location.href=location.href + x.value;}
+    else {document.getElementById('rdiv').className = 'ui positive labeled input error'; x.focus();}
+  }
+  function check(x){
+    if (x.value) { document.getElementById('rdiv').className = 'ui positive labeled input'; }
+  }
 </script>
+<div class="ui positive labeled input" id="rdiv">
+  <div class="ui label">
+    https://syno.in/
+  </div>
+  <input type="text" placeholder="room-name" id="rid" size=60 onkeyup="check(this)" onchange="check(this)">
+</div>
+</p>
+<p>
+<button class="ui primary right labeled icon button" onclick="start();">
+  <i class="right arrow icon"></i>
+  Start!
+</button>
 
+</p>
+</div>
 
 <footer style="color:black;">
 <p>
-Background photo by Keisuke Iwaya's personal project <a href="http://kikyu.iwaya.biz/">'Baloon Space photography'</a>.
-<br>
 This site is still in beta.
-<a href="http://syno.jp">About us</a>
 </p>
 </footer>
 
