@@ -26,46 +26,30 @@ sessionStorage.getScreenMediaJSExtensionId = "";
     <style>
       html { height: 100%; width: 100%; }
       body { height: 100%; width: 100%; overflow: hiddeeeeeeeeeeeeeeeeeen; }
-      #itemList { height: 80%; width: 19%; display: inline-block; }
-        #LocalVideoConteiner { position: relative;  }
-          #localVideo { }
+      #itemList { position: absolute; height: 100%; width: 100%; }
+        #LocalVideoConteiner { position: relative; width: 20%; }
+          #localVideo { width: 100%; border-radius: 20px; }
               .on { border : 1px solid aqua }
               .error { border : 1px solid red }
-          #localControles { position: absolute; top: 0; right: 0; }
-        .videoContainer {  }
-          .remoteVideo { border-radius: 20px; }
+          #localControles { position: absolute; top: 0px; }
+        .videoContainer { position: relative; width: 20%; }
+          .remoteVideo { width: 100%; border-radius: 20px; }
+            .pickup {position: absolute;}
           .visionReport { position: absolute; top: 0; left: 0 }
           .volume { position: absolute; bottom: 2px; left: 20%; height: 5px; width: 50%}
-      #pickup { height: 80%; width: 80%; display: inline-block; }
-        #first { position: absolute; top: 0; left: 0 }
+      #first { position: absolute; top: 20%; left: 30% }
+      #localLoading {}
+      #pin {position: absolute; top: 50px; left: 60%; display: none }
       #head { position: absolute; top: 0; left: 0 }
         #title { position: relative; top: 8px; left: 10px; font-family: 'Advent Pro', sans-serif; font-size: 42px; }
-      #profile { position: absolute; top: 0; right: 0 }
-      #localBase { position: relative; height: 20%; }
-        #chat { position: absolute; height: 100%; width: 30% ; overflow: scroll; }
-        #editorArea { position: absolute;  right: 0; width: 30%; height: 100%; }
+      #tools { position: absolute; top: 4px; right: 0 }
+        #toolMenu {}
+        #chat { position: absolute; top: 21px; right: 0px; height: 800%; width: 80% ; overflow: scroll; }
+        #editorArea { position: absolute; right: 0px; width: 80%; height: 800%; }
           #editor {height: 100%; width: 100%; }
     </style>
   </head>
   <body>
-    <div id="itemList">
-      <div class="ui compact big menu"></div>
-      <div id="LocalVideoConteiner" class="ui raised segment">
-        <a class="ui red ribbon label">You</a>
-          <video id="localVideo"></video>
-          <meter id="localVolume" class="volume" min="-45" max="-20" high="-25" low="-40"></meter>
-        <div id="localControles" class="ui vertical icon buttons">
-          <div class="ui button" onclick="mute()"><i class="unmute icon"></i></div>
-          <div class="ui button" onclick="pause()"><i class="video camera icon"></i></div>
-          <div class="ui button" onclick="shareScreen()"><i class="desktop icon"></i></div>
-          <div class="ui button" onclick="document.getElementById('uploadInput').click()">
-            <i class="send icon"></i>
-            <input type=file id="uploadInput" style="display:none">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="pickup">
       <div id="localLoading" class="ui indeterminate text active loader">Waiting others...</div>
       <div id="first" class="ui success message">
         <div class="content">
@@ -73,67 +57,125 @@ sessionStorage.getScreenMediaJSExtensionId = "";
           <p>You are the 1st to join. Please stand by or invite friends to this room.</p>
         </div>
       </div>
+
+    <div id="itemList">
+      <div class="ui compact big menu"></div>
+      <div id="LocalVideoConteiner" class="ui fluid image">
+        <video id="localVideo"></video>
+        <meter id="localVolume" class="volume" min="-45" max="-20" high="-25" low="-40"></meter>
+        <a class="ui red right ribbon label" data-content="Click me for setting your name."
+         onclick="$('#setName').modal('show');"><span id="nickname">[Anonymous]</span></a>
+        <div class="ui modal" id="setName">
+          <div class="header">Set nickname</div>
+          <div class="content">
+            <div class="ui fluid input">
+              <input type="text" placeholder="Your name">
+            </div>
+          </div>
+          <div class="actions">
+            <div class="ui left black deny button">Nope</div>
+            <div class="ui positive right labeled icon button">Set name<i class="checkmark icon"></i></div>
+          </div>
+        </div>
+        <div id="localControles" class="ui vertical icon buttons">
+          <div class="ui animated button" onclick="mute()">
+            <div class="hidden content">
+              <i class="icons"><i class="big red dont icon"></i><i class="mute icon"></i></i></div>
+            <div class="visible content"><i class="unmute icon"></i></div>
+          </div>
+          <div class="ui animated button" onclick="pause()">
+            <div class="hidden content">
+              <i class="icons"><i class="big red dont icon"></i><i class="pause icon"></i></i></div>
+            <div class="visible content"><i class="record icon"></i></div>
+          </div>
+        </div>
+      </div>
     </div>
+
+
 <div id="head" class="ui compact big menu">
   <span id="title" onclick="location.pathname='/';">syn<font color=teal>o</font>.in</span>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <div id="room" class="ui large tag label">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <div class="ui large tag label" id="room">
     <div class="ui pointing dropdown">
       <i class="home big icon"></i><span id="roomName" class="ui huge text"></span>
-      <div class="menu" id="roomMenu">
+      <div class="ui menu" id="roomMenu">
             <a class="item" data-content="If you have a trouble, please reload the page."
-              onclick="location.reload()"><i class="circle notched icon"></i>Reload</a>
-            <a class="item"><i class="users icon"></i>Invite<i class="right dropdown icon"></i>
-            </a>
-              <div class="menu">
+              onclick="location.reload()"><i class="refresh icon"></i>Reload</a>
+            <div class="ui dropdown item"><i class="users icon"></i>Invite<i class="dropdown icon"></i>
+              <div class="menu" id="roomSubMenu">
                 <a class="item" data-content="Open your default mail client." onclick="location.href=
                   'mailto:?subject=Chatting%20via%20syno.in.%0D%0A&body=Hi%21%0D%0A%0D%0AClick%20below%3A%0D%0A'
                   + location.href "><i class="mail outline icon"></i>Mail</a>
                 <a class="item" onclick="" data-content="Copy the URL link to this room.">
                   <i class="linkify icon"></i>Copy</a>
               </div>
+            </div>
             <a class="item" data-content="Set password to this room."><i class="unlock icon"></i>Lock</a>
+            <a class="item" data-content="Change video quality."><i class="configure icon"></i>Video Quality</a>
             <a class="item" onclick="location.pathname='/';" data-content="Leave from this room">
               <i class="sign out icon"></i>Leave</a>
       </div>
     </div>
   </div>
 </div>
-    <div id="profile" class="ui compact basic segment" onclick="$('#setName').modal('show');">
-      <a class="item" ><i class="user icon"></i><span id="name">[Anonymous]</span></a>
-      <div class="ui modal" id="setName">
-        <div class="header">Set nickname</div>
-        <div class="content">
-          <div class="ui fluid input">
-            <input type="text" placeholder="Your name">
-          </div>
-        </div>
-        <div class="actions">
-          <div class="ui left black deny button">Nope</div>
-          <div class="ui positive right labeled icon button">Set name<i class="checkmark icon"></i></div>
-        </div>
-      </div>
-    </div>
-    <div id=localBase>
-      <div id=chat class="ui comments">
+
+<div id="tools">
+  <div id="toolMenu" class="ui compact menu">
+          <a class="item" onclick="shareScreen()" data-content="Share your window or browser's tab">
+            <i class="desktop icon"></i>Screen Share</a>
+          <a class="item" onclick="document.getElementById('uploadInput').click()"
+              data-content="Send a file as chat message">
+            <i class="send icon"></i>File transfer<input type=file id="uploadInput" style="display:none">
+          </a>
+          <a class="item" onclick="showTextTool('chat')" data-content="Open text chat window">
+            <i class="talk outline icon"></i>Chat<div class="floating ui red label" id="chatL"></div></a>
+          <a class="item" onclick="showTextTool('note')"
+            data-content="Open collaboration note is synchronized with all users in real-time">
+            <i class="edit icon"></i>Sync note<div class="floating ui red label" id="noteL"></div></a>
+  </div>
+
+      <div id="chat" class="ui comments" style="display: none">
         <div class="ui fluid left icon input">
           <input type="text" placeholder="Hi all..." id="chatInput" onChange="sendChat(this)"
            data-content="Send text chat message.">
           <canvas id="snap" width="120" height="90" style="display:none"></canvas>
           <i class="talk outline icon"></i>
         </div>
-        <div id="chatLog" class="comments"></div>
+        <div id="chatLog" class="comments" style="background-color : white"></div>
       </div>
-      <div id="editorArea" class="ui fluid left icon texarea">
-        <!-- <i class="file text outline icon"></i> -->
+
+      <div id="editorArea" class="ui fluid" style="display: none">
         <textarea id="editor" placeholder="Collaboration note" 
           data-content="This box is synchronized to friends in this room."></textarea>
       </div>
-    </div>
+
+</div>
+
+<i class="red big pin icon" id="pin"></i>
+
     <script>
-      $('.dropdown').dropdown({on: 'hover',action: 'none'});
+      $('#room > .dropdown').dropdown({on: 'hover',action: 'none'});
+      $('#roomSubMenu').dropdown({on: 'hover',action: 'none'});
       $('#roomMenu > .item').popup({position: 'right center'});
-      $('#chatInput, #editor').popup({on: 'focus'});
+      $('#roomSubMenu > .item').popup({position: 'right center'});
+      $('#LocalVideoConteiner > .label').popup({position: 'right center'});
+      $('#toolMenu > .item').popup({position: 'bottom right'});
+//      $('#chatInput').popup();
+//      $('#editor').popup();
+      function showTextTool(name){
+        if (name == "chat"){
+          $('#editorArea').transition('hide');
+          $('#chat').transition('slide down');
+          $('#chatL').innerText = "";
+        } else if (name == "note"){
+          $('#chat').transition('hide');
+          $('#editorArea').transition('slide down');
+        } else if (name == "close"){
+          $('#chat').transition('hide');
+          $('#editorArea').transition('hide');
+        }
+      }
       document.getElementById("firstMessage").innerText = "Welcome to " + location.pathname.substr(1);
       document.getElementById("roomName").innerText = location.pathname.substr(1);
     // Local Control
@@ -202,7 +244,8 @@ sessionStorage.getScreenMediaJSExtensionId = "";
       webrtc.on('localScreenAdded', function (v){
         v.className = "remoteVideo";
         var container = document.createElement('div');
-        container.className = 'remoteVideo';
+        container.className = 'videoContainer ui fluid image';
+        container.style.width = "20%";
         container.id = 'container_' + "localScreen";
         container.appendChild(v);
         document.getElementById('itemList').appendChild(container);
@@ -210,7 +253,8 @@ sessionStorage.getScreenMediaJSExtensionId = "";
       });
     // stop share screen
       webrtc.on('localScreenRemoved', function (v) {
-        document.getElementById('itemList').removeChild(document.getElementById('container_' + "localScreen"));
+console.log('run');
+        document.getElementById('itemList').removeChild(v.parentNode);
         alignVideo();
       });
     // hoge
@@ -218,11 +262,45 @@ sessionStorage.getScreenMediaJSExtensionId = "";
       });
 
     // video add
+      var pickupMode ;
       webrtc.on('videoAdded', function (video, peer) {
+        document.getElementById("first").style.display = "none";
+        document.getElementById("localLoading").style.display = "none";
         video.className = "remoteVideo";
-        video.onclick = function (video) {analyzeImage(this);};
+//        video.onclick = function (video) {analyzeImage(this);};
+        video.onclick = function (video) {
+          var cid = this.parentNode.id;
+          // already pickuped
+          if ($("#" + cid).hasClass("pickup")){
+            if (pickupMode == "pin"){
+              $("#pin").transition('fly up');
+            }
+            $("#" + cid).animate({width: "20%", left: "", top: ""} );
+            $("#" + cid).css({position: "relative"});
+            $("#" + cid).removeClass("pickup");
+            pickupMode = "none";
+          } else {
+            pickupMode = "pin";
+            var pickups = document.getElementById("itemList").getElementsByClassName("pickup");
+            if (pickups.length > 0) {
+              if (pickupMode == "pin"){
+                $("#pin").transition('fly up');
+              }
+              $("#" + pickups[0].id).animate({width: "20%", left: "", top: ""});
+              $("#" + pickups[0].id).css({position: "relative"});
+              pickups[0].classList.remove("pickup");
+            }
+            $("#" + cid).addClass("pickup");
+            var y = this.parentNode.getBoundingClientRect().top;
+            $("#" + cid).css({position: "absolute", top: y});
+            $("#" + cid).animate({width: "80%", left: "20%", top: "50px"},{complete: function(){
+              $("#pin").transition('fly down');
+            } });
+          }
+        };
         var container = document.createElement('div');
-        container.className = 'videoContainer';
+        container.style.width = "20%";
+        container.className = 'videoContainer ui fluid image';
 //        container.classList.add("card");
         container.id = 'container_' + webrtc.getDomId(peer);
         container.appendChild(video);
@@ -235,8 +313,9 @@ sessionStorage.getScreenMediaJSExtensionId = "";
         vol.low = -40;
         vol.high = -25;
         container.appendChild(vol);
-        var content = document.createElement('div');
-        content.innerHTML= "[Anonymous] "+ new Date().toLocaleTimeString();
+        var content = document.createElement('a');
+        content.className = "ui blue right ribbon label";
+        content.innerText =  "[Anonymous] ";
         container.appendChild(content);
         document.getElementById('itemList').appendChild(container);
         // receive file
@@ -299,10 +378,15 @@ sessionStorage.getScreenMediaJSExtensionId = "";
         if ( document.getElementById(elid) ) {
           document.getElementById('itemList').removeChild(document.getElementById(elid));
         }
+        if (document.getElementsByClassName("videoConteiner").length == 0) {
+          document.getElementById("first").style.display = "inline";
+          document.getElementById("localLoading").style.display = "inline";
+        }
         alignVideo();
       });
    // Video align 
       function alignVideo (mode, pin) {
+        return;
         var rm = document.getElementById("remotes");
         var vc = rm.getElementsByClassName("videoContainer");
         if (vc.length > 0){
@@ -402,6 +486,10 @@ sessionStorage.getScreenMediaJSExtensionId = "";
         var parentElement = document.getElementById("chatLog");
         parentElement.insertBefore(chatDiv, parentElement.firstChild);
         $("#" + chatDiv.id).hide().transition('fly down');
+        if (parentElement.style.display !== "none"){
+          var cl = document.getElementById("chatL");
+          cl.innerText=(cl.innerText) ? parseInt(cl.innerText) + 1 : 1;
+        }
       }
 
     // show volume
@@ -419,9 +507,58 @@ sessionStorage.getScreenMediaJSExtensionId = "";
       });
 
     // remote volume has changed
+      var pickupSum = {};
       webrtc.on('remoteVolumeChange', function (peer, volume) {
         showVolume(document.getElementById('volume_' + peer.id), volume);
+        var vid = webrtc.getDomId(peer);
+        if (! pickupSum[vid] ) {
+          pickupSum[vid] = 0;
+        }
+        if (volume > -80){
+          pickupSum[vid] += volume + 60;
+        }
       });
+      function pickup(){
+        if (pickupMode == "pin"){
+          return;
+        }
+        var keys = Object.keys(pickupSum).sort(
+          function (a,b) {
+            return pickupSum[a] - pickupSum[b];
+          }
+        );
+          if (! keys ) {
+            ;
+          } else if (pickupSum[keys[0]] > 0 ){
+            var cid = '#' + 'container_' + keys[0];
+            
+            if ( $(cid).hasClass("pickup") ){
+              ;
+            } else {
+              var pickups = document.getElementById("itemList").getElementsByClassName("pickup");
+              if (pickups.length > 0) {
+                $("#" + pickups[0].id).animate({width: "20%", left: "", top: ""});
+                $("#" + pickups[0].id).css({position: "relative"});
+                pickups[0].classList.remove("pickup");
+              }
+              $(cid).addClass("pickup");
+              $(cid).css({position: "absolute"});
+              $(cid).animate({width: "80%", left: "20%", top: "0"} );
+            }
+//            var taget = document.getElementById('container_' + keys[0]);          
+//            var pu = document.getElementById("pickup");
+//            var vc = pu.getElementsByClassName("videoContainer");          
+//            if ( (vc.length > 1) && (vc[0].id !== 'container_' + keys[0]) ) {
+//              document.getElementById("itemList").appendChild(vc[0].id);
+//              $('#' + vc[0].id).prependto('#itemList');
+//            }          
+//            pu.appendChild(document.getElementById('container_' + keys[0]));
+//            $('#' + 'container_' + key).prependTo('#pickup');
+          }
+        pickupSum = {};
+      }
+      var pickupTimer = setInterval(pickup, 2* 1000);
+
 
     // receive note change event
       ed = document.getElementById('editor');
@@ -449,6 +586,8 @@ sessionStorage.getScreenMediaJSExtensionId = "";
         } else {
           ed.innerHTML = mod.text;
         }
+        var nl = document.getElementById("noteL");
+        nl.innerText="o";
       }
       webrtc.on('channelMessage', function (peer, label, data, ch, ev) {
         if (data.type == 'chat') {
