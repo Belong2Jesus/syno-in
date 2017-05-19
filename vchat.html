@@ -14,7 +14,7 @@ sessionStorage.getScreenMediaJSExtensionId = "";
     document.head.appendChild(link);
   //}.();
 </script>
-    <title>Syno IN</title>
+    <title>Syno in</title>
     <link href='https://fonts.googleapis.com/css?family=Advent+Pro:100' rel='stylesheet' type='text/css'>
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.js"></script>
@@ -69,12 +69,13 @@ sessionStorage.getScreenMediaJSExtensionId = "";
           <div class="header">Set nickname</div>
           <div class="content">
             <div class="ui fluid input">
-              <input type="text" placeholder="Your name">
+               <input type="text" placeholder="Your name" ID="inputName">
             </div>
           </div>
           <div class="actions">
-            <div class="ui left black deny button">Nope</div>
-            <div class="ui positive right labeled icon button">Set name<i class="checkmark icon"></i></div>
+            <div class="ui left black deny button">Cancel</div>
+            <div class="ui positive right labeled icon button" onclick="setName()">Set name
+              <i class="checkmark icon"></i></div>
           </div>
         </div>
         <div id="localControles" class="ui vertical icon buttons">
@@ -198,21 +199,21 @@ sessionStorage.getScreenMediaJSExtensionId = "";
       }
       function shareScreen(){
         if (sessionStorage.getScreenMediaJSExtensionId == apikey){
-          var lcScreen = document.getElementById("lcScreen");
-          if (webrtc.getLocalScreen()) {
-            lcScreen.classList.remove("on");
-            webrtc.stopScreenShare();
-          } else {
+//          if (webrtc.getLocalScreen()) {
+//            webrtc.stopScreenShare();
+//            delete webrtc.localScreen;
+//            document.getElementById('container_localScreen').removeChild(document.getElementById('localScreen'));
+//            document.getElementById('itemList').removeChild(document.getElementById('container_localScreen'));
+//            alignVideo();
+//          } else {
             webrtc.shareScreen(function (err) {
               if (err) {
-                // lcScreen.classList.add("err");
                 console.log(err); // ToDo: error
               } else {
-                lcScreen.classList.add("on");
                 alignVideo();
               }
             });
-          }
+//          }
         } else {
           chrome.webstore.install(
             "https://chrome.google.com/webstore/detail/" + apikey,
@@ -246,16 +247,14 @@ sessionStorage.getScreenMediaJSExtensionId = "";
         var container = document.createElement('div');
         container.className = 'videoContainer ui fluid image';
         container.style.width = "20%";
-        container.id = 'container_' + "localScreen";
+        container.id = 'container_localScreen';
         container.appendChild(v);
         document.getElementById('itemList').appendChild(container);
         alignVideo();
       });
     // stop share screen
-      webrtc.on('localScreenRemoved', function (v) {
-console.log('run');
-        document.getElementById('itemList').removeChild(v.parentNode);
-        alignVideo();
+      webrtc.on('unshareScreen', function (v) {
+        
       });
     // hoge
       webrtc.on('createdPeer', function (p) {
@@ -374,7 +373,7 @@ console.log('run');
 
     // Video removed
       webrtc.on('videoRemoved', function (video, peer) {
-        var elid = (peer) ? 'container_' + webrtc.getDomId(peer) : 'localScreenContainer';
+        var elid = (peer) ? 'container_' + webrtc.getDomId(peer) : 'container_localScreen';
         if ( document.getElementById(elid) ) {
           document.getElementById('itemList').removeChild(document.getElementById(elid));
         }
@@ -514,8 +513,8 @@ console.log('run');
         if (! pickupSum[vid] ) {
           pickupSum[vid] = 0;
         }
-        if (volume > -80){
-          pickupSum[vid] += volume + 60;
+        if (volume > -50){
+          pickupSum[vid] += volume + 50;
         }
       });
       function pickup(){
@@ -524,7 +523,7 @@ console.log('run');
         }
         var keys = Object.keys(pickupSum).sort(
           function (a,b) {
-            return pickupSum[a] - pickupSum[b];
+            return pickupSum[b] - pickupSum[a];
           }
         );
           if (! keys ) {
